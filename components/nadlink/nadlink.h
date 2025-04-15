@@ -34,7 +34,7 @@ class NadLink : public Component {
   void standby_toggle();
   void send_command(uint8_t command);
 
-  GPIOPin *nadlink_signal_pin
+  GPIOPin *nadlink_signal_pin;
   void set_nadlink_signal_pin(GPIOPin *pin ) { nadlink_signal_pin = pin; }
   void set_parent(button::Button *btn) { this->parent_button_ = btn; }
 
