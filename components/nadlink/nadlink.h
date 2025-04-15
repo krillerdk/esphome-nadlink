@@ -28,13 +28,14 @@ enum class NadCommand : uint8_t {
 class NadLink : public Component {
  public:
   void setup() override;
-  void set_nadlink_signal_pin( *GPIOPin pin ) { nadlink_signal_pin = pin; }
   void volume_up_press();
   void volume_down_press();
-  void set_standby(bool state);
+  void standby_toggle();
   void send_command(uint8_t command);
 
-  GPIOPin *nadlink_signal_pin;
+  GPIOPin *nadlink_signal_pin
+  void set_nadlink_signal_pin( *GPIOPin pin ) { nadlink_signal_pin = pin; }
+  void set_parent(button::Button *btn) { this->parent_button_ = btn; }
 
  private:
 
@@ -72,15 +73,15 @@ class VolumeDownButton : public button::Button {
   NadLink *parent_;
 };
 
-class StandbySwitch : public button::Button {
- public:
-  StandbySwitch(NadLink *parent) : parent_(parent) {}
-  void write_state(bool state) {
+class StandbyButton : public button::Button {
+  public:
+    StandbySwitch(NadLink *parent) : parent_(parent) {}
+    void press_action() {
       parent_->standby_toggle();
-  }
-
- protected:
-  NadLink *parent_;
+    }
+    
+  protected:
+    NadLink *parent_;
 };
 
 
