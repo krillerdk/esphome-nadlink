@@ -3,9 +3,9 @@
 #include "esphome/core/component.h"
 #include "esphome/core/gpio.h"
 
-#include "esphome/components/switch/switch.h"
+//#include "esphome/components/switch/switch.h"
 #include "esphome/components/button/button.h"
-#include "esphome/components/sensor/sensor.h"
+//#include "esphome/components/sensor/sensor.h"
 
 
 namespace esphome {
@@ -75,7 +75,7 @@ class VolumeDownButton : public button::Button {
 
 class StandbyButton : public button::Button {
   public:
-    StandbySwitch(NadLink *parent) : parent_(parent) {}
+    StandbyButton(NadLink *parent) : parent_(parent) {}
     void press_action() {
       parent_->standby_toggle();
     }
