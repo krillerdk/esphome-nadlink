@@ -12,17 +12,16 @@ namespace esphome {
 namespace nadlink {
 
 enum class NadCommand : uint8_t {
-  POWER_TOGGLE = 0x0C,
-  VOL_UP       = 0x10,
-  VOL_DOWN     = 0x11,
-  MUTE_TOGGLE  = 0x0D,
-  INPUT_CD     = 0x45,
-  INPUT_VIDEO1 = 0x46,
-  INPUT_VIDEO2 = 0x47,
-  INPUT_TUNER  = 0x44,
-  INPUT_DISC   = 0x43,
-  INPUT_TAPE1  = 0x41,
-  INPUT_TAPE2  = 0x40,
+  POWER_TOGGLE = 0x80,
+  VOL_UP       = 0x88,
+  VOL_DOWN     = 0x8C,
+  MUTE_TOGGLE  = 0x94,
+  INPUT_CD     = 0x85,
+  INPUT_VIDEO  = 0xC2,
+  INPUT_TUNER  = 0x82,
+  INPUT_DISC   = 0x89,
+  INPUT_TAPE1  = 0x8E,
+  INPUT_TAPE2  = 0x91,
 };
 
     
@@ -61,7 +60,7 @@ class VolumeUpButton : public button::Button {
  protected:
   NadLink *parent_;
 };
-
+    
 class VolumeDownButton : public button::Button {
  public:
   VolumeDownButton(NadLink *parent) : parent_(parent) {}
@@ -84,6 +83,7 @@ class StandbySwitch : public switch_::Switch {
  protected:
   NadLink *parent_;
 };
+
 
 }  // namespace nadlink
 }  // namespace esphome

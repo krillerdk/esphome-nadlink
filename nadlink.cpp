@@ -17,17 +17,17 @@ void NadLink::setup() {
 
 void NadLink::volume_up_press() {
   ESP_LOGD(TAG, "Volume Up");
-  send_command(0x88);  // Volume up command
+  send_command(NadCommand::VOL_UP);  // Volume up command
 }
 
 void NadLink::volume_down_press() {
   ESP_LOGD(TAG, "Volume Down");
-  send_command(0x8C);  // Volume down command
+  send_command(NadCommand::VOL_DOWN);  // Volume down command
 }
 
-void NadLink::set_standby(bool state) {
-  ESP_LOGD(TAG, "Set standby to %s", state ? "ON" : "OFF");
-  send_command(0x80);  // Power toggle
+void NadLink::standby_toggle() {
+  ESP_LOGD(TAG, "Toggle standby");
+  send_command(NadCommand::POWER_TOGGLE);  // Power toggle
 }
 
 void NadLink::send_command(uint8_t command) {
