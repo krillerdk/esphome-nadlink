@@ -1,7 +1,7 @@
 #pragma once
 
 #include "esphome/core/component.h"
-#include "esphome/core/gpio/gpio.h"
+#include "esphome/core/gpio.h"
 
 #include "esphome/components/switch/switch.h"
 #include "esphome/components/button/button.h"
