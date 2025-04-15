@@ -3,8 +3,8 @@
 #include "esphome/core/component.h"
 #include "esphome/core/gpio.h"
 
-#include "esphome/components/switch.h"
-#include "esphome/components/button.h"
+#include "esphome/components/switch/switch.h"
+#include "esphome/components/buttonbutton.h"
 #include "esphome/components/sensor.h"
 
 
