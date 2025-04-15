@@ -5,7 +5,7 @@
 
 //#include "esphome/components/switch/switch.h"
 //#include "esphome/components/sensor/sensor.h"
-#include "button/button.h"
+#include <esphome/components/button/button.h>
 
 
 

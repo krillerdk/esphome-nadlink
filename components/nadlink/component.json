@@ -1,7 +1,7 @@
 {
   "domain": "nadlink",
-  "name": "NADLink Controller",
-  "version": "1.0",
+  "name": "NADLink Remote",
+  "version": "0.5.0",
   "dependencies": ["button"],
   "targets": ["esp8266", "esp32"]
 }
