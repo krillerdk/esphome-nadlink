@@ -4,8 +4,8 @@
 #include "esphome/core/gpio.h"
 
 #include "esphome/components/switch/switch.h"
-#include "esphome/components/buttonbutton.h"
-#include "esphome/components/sensor.h"
+#include "esphome/components/button/button.h"
+#include "esphome/components/sensor/sensor.h"
 
 
 namespace esphome {
