@@ -72,12 +72,11 @@ class VolumeDownButton : public button::Button {
   NadLink *parent_;
 };
 
-class StandbySwitch : public switch_::Switch {
+class StandbySwitch : public button::Button {
  public:
   StandbySwitch(NadLink *parent) : parent_(parent) {}
   void write_state(bool state) {
-    parent_->set_standby(state);
-    //publish_state(state);
+      parent_->standby_toggle();
   }
 
  protected:
