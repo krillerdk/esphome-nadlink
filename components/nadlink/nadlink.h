@@ -4,8 +4,9 @@
 #include "esphome/core/gpio.h"
 
 //#include "esphome/components/switch/switch.h"
-#include "esphome/components/button/button.h"
 //#include "esphome/components/sensor/sensor.h"
+#include "esphome/components/button/button.h"
+
 
 
 namespace esphome {
@@ -56,7 +57,9 @@ class NadLink : public Component {
 class VolumeUpButton : public button::Button {
  public:
   VolumeUpButton(NadLink *parent) : parent_(parent) {}
-  void press_action() { parent_->volume_up_press(); }
+  void press_action() override {
+      parent_->volume_up_press();
+  }
 
  protected:
   NadLink *parent_;
@@ -65,7 +68,7 @@ class VolumeUpButton : public button::Button {
 class VolumeDownButton : public button::Button {
  public:
   VolumeDownButton(NadLink *parent) : parent_(parent) {}
-  void press_action() {
+  void press_action() override {
       parent_->volume_down_press();
   }
 
@@ -76,7 +79,7 @@ class VolumeDownButton : public button::Button {
 class StandbyButton : public button::Button {
   public:
     StandbyButton(NadLink *parent) : parent_(parent) {}
-    void press_action() {
+    void press_action() override {
       parent_->standby_toggle();
     }
     
