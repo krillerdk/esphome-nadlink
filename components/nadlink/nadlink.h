@@ -1,92 +1,94 @@
 #pragma once
 
 #include "esphome/core/component.h"
-#include "esphome/core/gpio.h"
-
-//#include "esphome/components/switch/switch.h"
-//#include "esphome/components/sensor/sensor.h"
-#include <esphome/components/button/button.h>
-
-
+#include "esphome/components/button/button.h"
 
 namespace esphome {
 namespace nadlink {
 
-enum class NadCommand : uint8_t {
-  POWER_TOGGLE = 0x80,
-  VOL_UP       = 0x88,
-  VOL_DOWN     = 0x8C,
-  MUTE_TOGGLE  = 0x94,
-  INPUT_CD     = 0x85,
-  INPUT_VIDEO  = 0xC2,
-  INPUT_TUNER  = 0x82,
-  INPUT_DISC   = 0x89,
-  INPUT_TAPE1  = 0x8E,
-  INPUT_TAPE2  = 0x91,
-};
+class NADLink;
 
-    
-class NadLink : public Component {
+class NADLink : public Component {
  public:
+  NADLink();
   void setup() override;
-  void volume_up_press();
-  void volume_down_press();
-  void standby_toggle();
-  void send_command(uint8_t command);
 
-  GPIOPin *nadlink_signal_pin;
-  void set_nadlink_signal_pin(GPIOPin *pin ) { nadlink_signal_pin = pin; }
-  void set_parent(button::Button *btn) { this->parent_button_ = btn; }
-
- private:
-
-  void send_start_bit();
-  void send_bit(bool bit);
-  void send_one();
-  void send_zero();
-  void send_stop_bit();
-  void send_byte(uint8_t byte);
-
-  bool power_is_on = false;
-
-  const uint8_t nad_c_740_address_1 = 0x87;
-  const uint8_t nad_c_740_address_2 = 0x7C;
-
-};
-
-class VolumeUpButton : public button::Button {
- public:
-  VolumeUpButton(NadLink *parent) : parent_(parent) {}
-  void press_action() override {
-      parent_->volume_up_press();
-  }
-
+  float get_setup_priority() const override;
+  
+  void set_nadlink_pin(uint8_t pin);
+  
+  // Input selection methods
+  void switch_to_tape_1();
+  void switch_to_tape_2();
+  void switch_to_tuner();
+  void switch_to_aux();
+  void switch_to_video();
+  void switch_to_cd();
+  void switch_to_disc();
+  
+  // Volume control methods
+  void volume_up();
+  void volume_down();
+  
+  // Mute toggle method
+  void toggle_mute();
+  
+  // Power control method
+  void toggle_standby();
+  
  protected:
-  NadLink *parent_;
+  uint8_t nadlink_pin_{13};
+  
+    // NADLink protocol methods
+  void pulse(int microseconds);
+  void flat(int microseconds);
+  void command_preamble();
+  void command_terminator();
+  void send_repeat();
+  void send_one_bit();
+  void send_zero_bit();
+  void send_byte(uint8_t data_byte);
+  void send_byte_and_inverse(uint8_t data_byte);
+  void send_command(uint8_t command, bool pause_before_and_after_command = true);
+  void change_volume_to_default();
+  void change_volume_to_zero();
+  void toggle_speakers_a_b();
+  void turn_on();
+  void turn_off();
 };
-    
-class VolumeDownButton : public button::Button {
+
+// Button classes for control
+class NADLinkVolumeUpButton : public button::Button {
  public:
-  VolumeDownButton(NadLink *parent) : parent_(parent) {}
-  void press_action() override {
-      parent_->volume_down_press();
-  }
-
+  explicit NADLinkVolumeUpButton(NADLink *parent);
  protected:
-  NadLink *parent_;
+  void press_action() override;
+  NADLink *parent_;
 };
 
-class StandbyButton : public button::Button {
-  public:
-    StandbyButton(NadLink *parent) : parent_(parent) {}
-    void press_action() override {
-      parent_->standby_toggle();
-    }
-    
-  protected:
-    NadLink *parent_;
+class NADLinkVolumeDownButton : public button::Button {
+ public:
+  explicit NADLinkVolumeDownButton(NADLink *parent);
+ protected:
+  void press_action() override;
+  NADLink *parent_;
 };
 
+class NADLinkMuteToggleButton : public button::Button {
+ public:
+  explicit NADLinkMuteToggleButton(NADLink *parent);
+ protected:
+  void press_action() override;
+  NADLink *parent_;
+};
+
+class NADLinkStandbyToggleButton : public button::Button {
+ public:
+  explicit NADLinkPowerToggleButton(NADLink *parent);
+ protected:
+  void press_action() override;
+  NADLink *parent_;
+};
 
 }  // namespace nadlink
 }  // namespace esphome
