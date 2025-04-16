@@ -13,7 +13,7 @@ class NADLink : public Component {
 
   float get_setup_priority() const override;
   
-  void set_nadlink_pin(uint8_t pin);
+  void set_nadlink_pin(GPIOPin *pin);
   
   // Input selection methods
   void switch_to_tape_1();
@@ -36,7 +36,7 @@ class NADLink : public Component {
   
  protected:
 
-  uint8_t nadlink_pin_{13};
+  GPIOPin *pin nadlink_pin_;
 
   bool power_is_on_{false};
     

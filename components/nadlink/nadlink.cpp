@@ -18,7 +18,7 @@ float NADLink::get_setup_priority() const {
     return setup_priority::HARDWARE;
 }
     
-void NADLink::set_nadlink_pin(uint8_t pin) {
+void NADLink::set_nadlink_pin(GPIOPin *pin) {
     nadlink_pin_ = pin;
     ESP_LOGD(TAG, "NADLink pin set to %d", nadlink_pin_);
 }
