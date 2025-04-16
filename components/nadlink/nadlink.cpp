@@ -4,6 +4,8 @@
 namespace esphome {
 namespace nadlink {
 
+static const char *const TAG = "nadlink";
+    
 NADLink::NADLink() {}
 
 void NADLink::setup() {
@@ -12,7 +14,7 @@ void NADLink::setup() {
     digitalWrite(nadlink_pin_, HIGH);    
 }
 
-float NADLink::get_setup_priority() {
+float NADLink::get_setup_priority() const {
     return setup_priority::HARDWARE;
 }
     
