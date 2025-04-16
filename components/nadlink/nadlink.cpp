@@ -10,8 +10,11 @@ NADLink::NADLink() {}
 
 void NADLink::setup() {
     // Configure the NADLink output pin
-    pinMode(nadlink_pin_, OUTPUT);
-    digitalWrite(nadlink_pin_, HIGH);    
+    set_nadlink_pin(nadlink_pin_);
+    //pinMode(nadlink_pin_, OUTPUT);
+    nadlink_pin_.pinMode(OUTPUT);
+    nadlink_pin_.digitalWrite(HIGH);
+    //digitalWrite(nadlink_pin_, HIGH);    
 }
 
 float NADLink::get_setup_priority() const {
