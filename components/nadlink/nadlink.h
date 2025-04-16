@@ -84,7 +84,7 @@ class NADLinkMuteToggleButton : public button::Button {
 
 class NADLinkStandbyToggleButton : public button::Button {
  public:
-  explicit NADLinkPowerToggleButton(NADLink *parent);
+  explicit NADLinkStandbyToggleButton(NADLink *parent);
  protected:
   void press_action() override;
   NADLink *parent_;
