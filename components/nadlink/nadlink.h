@@ -36,8 +36,38 @@ class NADLink : public Component {
   
  protected:
   uint8_t nadlink_pin_{13};
-  
-    // NADLink protocol methods
+
+  bool power_is_on_{false};
+    
+  // NAD C 740 address
+  static constexpr uint8_t nad_c_740_address_1 = 0x87;  // B10000111
+  static constexpr uint8_t nad_c_740_address_2 = 0x7C;  // B01111100
+
+  // NAD C740 commands
+  static constexpr uint8_t power_on = 0x25;
+  static constexpr uint8_t power_off = 0xC8;
+  static constexpr uint8_t power_toggle = 0x80;
+
+  static constexpr uint8_t toggle_speaker_a = 0xCE;
+  static constexpr uint8_t toggle_speaker_b = 0xCF;
+
+  static constexpr uint8_t switch_input_to_tape_1 = 0x8E;
+  static constexpr uint8_t switch_input_to_tape_2 = 0x91;
+  static constexpr uint8_t switch_input_to_tuner = 0x82;
+  static constexpr uint8_t switch_input_to_aux = 0x9B;
+  static constexpr uint8_t switch_input_to_video = 0xC2;
+  static constexpr uint8_t switch_input_to_cd = 0x85;
+  static constexpr uint8_t switch_input_to_disc = 0x89;
+
+  static constexpr uint8_t increase_volume = 0x88;
+  static constexpr uint8_t decrease_volume = 0x8C;
+  static constexpr uint8_t toggle_mute = 0x94;
+
+  // Default volume level
+  static constexpr float default_volume_level = 1.1;
+
+    
+  // NADLink protocol methods
   void pulse(int microseconds);
   void flat(int microseconds);
   void command_preamble();
