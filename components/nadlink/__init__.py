@@ -1,6 +1,6 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.const import CONF_ID
+from esphome.const import CONF_ID, CONF_PIN
 from esphome.components import button
 from esphome import pins
 
@@ -11,7 +11,8 @@ VolumeDownButton = nadlink_ns.class_("NADLinkVolumeDownButton", button.Button)
 StandbyButton = nadlink_ns.class_("NADLinkStandbyToggleButton", button.Button)
 MuteButton = nadlink_ns.class_("NADLinkMuteToggleButton", button.Button)
 
-CONF_NADLINK_SIGNAL_PIN = "nadlink_signal_pin"
+CONF_NADLINK_ID = "nadlink_id"
+#CONF_PIN = "nadlink_signal_pin"
 CONF_VOLUME_UP_BUTTON = "volume_up_button"
 CONF_VOLUME_DOWN_BUTTON = "volume_down_button"
 CONF_STANDBY_BUTTON = "standby_button"
@@ -29,7 +30,7 @@ CONF_DISC = "disc"
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(NadLink),
-        cv.Required(CONF_NADLINK_SIGNAL_PIN): pins.gpio_output_pin_schema,
+        cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
         cv.Optional(CONF_VOLUME_UP_BUTTON): button.BUTTON_SCHEMA.extend({
             cv.GenerateID(): cv.declare_id(VolumeUpButton)
         }),
@@ -58,7 +59,7 @@ async def to_code(config):
     await cg.register_component(var, config)
     
     # Configure the NADLink pin
-    pin = await cg.gpio_pin_expression(config[CONF_NADLINK_SIGNAL_PIN])
+    pin = await cg.gpio_pin_expression(config[CONF_PIN])
     cg.add(var.set_nadlink_pin(pin))
     
     # Register buttons
