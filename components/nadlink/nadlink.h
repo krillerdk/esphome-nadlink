@@ -61,7 +61,7 @@ class NADLink : public Component {
 
   static constexpr uint8_t increase_volume = 0x88;
   static constexpr uint8_t decrease_volume = 0x8C;
-  static constexpr uint8_t toggle_mute = 0x94;
+  static constexpr uint8_t toggle_mute_cmd = 0x94;
 
   // Default volume level
   static constexpr float default_volume_level = 1.1;

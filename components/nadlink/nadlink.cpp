@@ -8,7 +8,7 @@ NADLink::NADLink() {}
 
 void NADLink::setup() override {
     // Configure the NADLink output pin
-    pinMode(nadlink_pin_, FLAG_OUTPUT);
+    pinMode(nadlink_pin_, OUTPUT);
     digitalWrite(nadlink_pin_, HIGH);    
 }
 
