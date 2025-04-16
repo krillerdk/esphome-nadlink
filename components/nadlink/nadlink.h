@@ -35,7 +35,7 @@ class NADLink : public Component {
   void toggle_standby();
   
  protected:
-  static const char* TAG = "nadlink"
+  static constexpr char* TAG = "nadlink";
   uint8_t nadlink_pin_{13};
 
   bool power_is_on_{false};
