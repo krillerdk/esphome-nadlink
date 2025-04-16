@@ -212,7 +212,7 @@ void NADLink::send_command(uint8_t command, bool pause_before_and_after_command)
 // Volume Up Button
 NADLinkVolumeUpButton::NADLinkVolumeUpButton() : button::Button {}
 
-explicit NADLinkVolumeUpButton::NADLinkVolumeUpButton(NADLink *parent) : parent_(parent) {}
+NADLinkVolumeUpButton::NADLinkVolumeUpButton(NADLink *parent) : parent_(parent) {}
 
 void NADLinkVolumeUpButton::press_action() {
     parent_->volume_up();
@@ -221,7 +221,7 @@ void NADLinkVolumeUpButton::press_action() {
 // Volume Down Button
 NADLinkVolumeDownButton::NADLinkVolumeDownButton() : button::Button {}
     
-explicit NADLinkVolumeDownButton::NADLinkVolumeDownButton(NADLink *parent) : parent_(parent) {}
+NADLinkVolumeDownButton::NADLinkVolumeDownButton(NADLink *parent) : parent_(parent) {}
 
 void NADLinkVolumeDownButton::press_action() {
     parent_->volume_down();
@@ -230,7 +230,7 @@ void NADLinkVolumeDownButton::press_action() {
 // Mute Toggle Button
 NADLinkMuteToggleButton::NADLinkMuteToggleButton(): button::Button {}
 
-explicit NADLinkMuteToggleButton::NADLinkMuteToggleButton(NADLink *parent) : parent_(parent) {}
+NADLinkMuteToggleButton::NADLinkMuteToggleButton(NADLink *parent) : parent_(parent) {}
 
 void NADLinkMuteToggleButton::press_action() {
     parent_->toggle_mute();
@@ -239,7 +239,7 @@ void NADLinkMuteToggleButton::press_action() {
 // Power Toggle Button
 NADLinkStandbyToggleButton::NADLinkStandbyToggleButton() : button::Button {}
 
-explicit NADLinkStandbyToggleButton::NADLinkStandbyToggleButton(NADLink *parent) : parent_(parent) {}
+ NADLinkStandbyToggleButton::NADLinkStandbyToggleButton(NADLink *parent) : parent_(parent) {}
 
 void NADLinkStandbyToggleButton::press_action() {
     parent_->toggle_standby();
