@@ -36,7 +36,7 @@ class NADLink : public Component {
   
  protected:
 
-  #uint8_t nadlink_pin_{13};
+  //uint8_t nadlink_pin_{13};
   GPIOPin *pin_{nullptr};
     //  GPIOPin nadlink_pin_;
 
