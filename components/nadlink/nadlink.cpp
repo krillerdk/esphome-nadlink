@@ -142,7 +142,8 @@ void NADLink::volume_down() {
   }
 
   // Sends a complete command
-  void NADLink::send_command(uint8_t command, bool pause_before_and_after_command = true) {
+    // void NADLink::send_command(uint8_t command, bool pause_before_and_after_command = true) {
+void NADLink::send_command(uint8_t command, bool pause_before_and_after_command) {
     int pause_length_in_ms = 250;
 
     // Pause before command
