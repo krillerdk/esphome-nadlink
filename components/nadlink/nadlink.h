@@ -47,7 +47,7 @@ class NADLink : public Component {
   // NAD C740 commands
   static constexpr uint8_t power_on = 0x25;
   static constexpr uint8_t power_off = 0xC8;
-  static constexpr uint8_t power_toggle = 0x80;
+  static constexpr uint8_t toggle_standby_cmd = 0x80;
 
   static constexpr uint8_t toggle_speaker_a = 0xCE;
   static constexpr uint8_t toggle_speaker_b = 0xCF;

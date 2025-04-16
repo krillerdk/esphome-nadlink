@@ -77,7 +77,7 @@ void NADLink::volume_down() {
   // Power control functions
   void NADLink::toggle_standby() {
       ESP_LOGD(TAG, "Toggling standby state");
-      send_command(toggle_standby);
+      send_command(toggle_standby_cmd);
   }
 
 
