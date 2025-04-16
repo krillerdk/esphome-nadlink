@@ -12,11 +12,11 @@ void NADLink::setup() {
     digitalWrite(nadlink_pin_, HIGH);    
 }
 
-float NADLink::get_setup_priority()  {
+float NADLink::get_setup_priority() {
     return setup_priority::HARDWARE;
 }
     
-void NADLINK::set_nadlink_pin(uint8_t pin) {
+void NADLink::set_nadlink_pin(uint8_t pin) {
     nadlink_pin_ = pin;
     ESP_LOGD(TAG, "NADLink pin set to %d", nadlink_pin_);
 }
