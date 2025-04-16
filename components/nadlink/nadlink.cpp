@@ -88,13 +88,13 @@ void NADLink::volume_down() {
   // NADLink protocol implementation
   void NADLink::pulse(int microseconds) {
     // 0V (Logicalfalse)
-    _pin_->digitalWrite(false);
+    _pin_->digital_write(false);
     delayMicroseconds(microseconds);
   }
 
   void NADLink::flat(int microseconds) {
     // +3.3V (Logicaltrue)
-    _pin_->digitalWrite(true);
+    _pin_->digital_write(true);
     delayMicroseconds(microseconds);
   }
 
