@@ -9,12 +9,11 @@ static const char *const TAG = "nadlink";
 NADLink::NADLink() {}
 
 void NADLink::setup() {
-    // Configure the NADLink output pin
-    set_nadlink_pin(nadlink_pin_);
+    pin_->setup();
     //pinMode(nadlink_pin_, OUTPUT);
-    nadlink_pin_.pinMode(OUTPUT);
-    nadlink_pin_.digitalWrite(HIGH);
-    //digitalWrite(nadlink_pin_, HIGH);    
+    //pin_.pinMode(OUTPUT);
+    pin_->digitalWrite(true);
+    //_pin_->digitalWrite( HIGH);    
 }
 
 float NADLink::get_setup_priority() const {
@@ -22,7 +21,7 @@ float NADLink::get_setup_priority() const {
 }
     
 void NADLink::set_nadlink_pin(GPIOPin *pin) {
-    nadlink_pin_ = pin;
+    pin_ = pin;
     ESP_LOGD(TAG, "NADLink pin set to %d", nadlink_pin_);
 }
 
@@ -88,14 +87,14 @@ void NADLink::volume_down() {
 
   // NADLink protocol implementation
   void NADLink::pulse(int microseconds) {
-    // 0V (Logical LOW)
-    digitalWrite(nadlink_pin_, LOW);
+    // 0V (Logicalfalse)
+    _pin_->digitalWrite(false);
     delayMicroseconds(microseconds);
   }
 
   void NADLink::flat(int microseconds) {
-    // +3.3V (Logical HIGH)
-    digitalWrite(nadlink_pin_, HIGH);
+    // +3.3V (Logicaltrue)
+    _pin_->digitalWrite(true);
     delayMicroseconds(microseconds);
   }
 
