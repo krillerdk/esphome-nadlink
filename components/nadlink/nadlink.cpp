@@ -6,13 +6,13 @@ namespace nadlink {
 
 NADLink::NADLink() {}
 
-void NADLink::setup() override {
+void NADLink::setup() {
     // Configure the NADLink output pin
     pinMode(nadlink_pin_, OUTPUT);
     digitalWrite(nadlink_pin_, HIGH);    
 }
 
-float NADLink::get_setup_priority() const override {
+float NADLink::get_setup_priority()  {
     return setup_priority::HARDWARE;
 }
     
@@ -71,7 +71,7 @@ void NADLink::volume_down() {
   // Toggle mute function
   void NADLink::toggle_mute() {
       ESP_LOGD(TAG, "Toggling Mute");
-      send_command(toggle_mute);
+      send_command(toggle_mute_cmd);
   }
   
   // Power control functions
@@ -211,7 +211,7 @@ NADLinkVolumeUpButton::NADLinkVolumeUpButton() {}
 
 explicit NADLinkVolumeUpButton::NADLinkVolumeUpButton(NADLink *parent) : parent_(parent) {}
 
-void NADLinkVolumeUpButton::press_action() override {
+void NADLinkVolumeUpButton::press_action() {
     parent_->volume_up();
 }
 
@@ -220,7 +220,7 @@ NADLinkVolumeDownButton::NADLinkVolumeDownButton() {}
     
 explicit NADLinkVolumeDownButton::NADLinkVolumeDownButton(NADLink *parent) : parent_(parent) {}
 
-void NADLinkVolumeDownButton::press_action() override {
+void NADLinkVolumeDownButton::press_action() {
     parent_->volume_down();
 }
 
@@ -229,7 +229,7 @@ NADLinkMuteToggleButton::NADLinkMuteToggleButton() {}
 
 explicit NADLinkMuteToggleButton::NADLinkMuteToggleButton(NADLink *parent) : parent_(parent) {}
 
-void NADLinkMuteToggleButton::press_action() override {
+void NADLinkMuteToggleButton::press_action() {
     parent_->toggle_mute();
 }
 
@@ -238,7 +238,7 @@ NADLinkStandbyToggleButton::NADLinkStandbyToggleButton() {}
 
 explicit NADLinkStandbyToggleButton::NADLinkStandbyToggleButton(NADLink *parent) : parent_(parent) {}
 
-void NADLinkStandbyToggleButton::press_action() override {
+void NADLinkStandbyToggleButton::press_action() {
     parent_->toggle_standby();
 }
 
