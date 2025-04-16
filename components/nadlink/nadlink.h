@@ -6,8 +6,6 @@
 namespace esphome {
 namespace nadlink {
 
-class NADLink;
-
 class NADLink : public Component {
  public:
   NADLink();
