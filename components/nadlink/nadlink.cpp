@@ -22,7 +22,7 @@ float NADLink::get_setup_priority() const {
     
 void NADLink::set_nadlink_pin(GPIOPin *pin) {
     pin_ = pin;
-    ESP_LOGD(TAG, "NADLink pin set to %d", nadlink_pin_);
+    ESP_LOGD(TAG, "NADLink pin set to %d", pin_);
 }
 
 // Public methods for input selection
@@ -88,13 +88,13 @@ void NADLink::volume_down() {
   // NADLink protocol implementation
   void NADLink::pulse(int microseconds) {
     // 0V (Logicalfalse)
-    _pin_->digital_write(false);
+    pin_->digital_write(false);
     delayMicroseconds(microseconds);
   }
 
   void NADLink::flat(int microseconds) {
     // +3.3V (Logicaltrue)
-    _pin_->digital_write(true);
+    pin_->digital_write(true);
     delayMicroseconds(microseconds);
   }
 
