@@ -12,7 +12,7 @@ void NADLink::setup() {
     pin_->setup();
     //pinMode(nadlink_pin_, OUTPUT);
     //pin_.pinMode(OUTPUT);
-    pin_->digitalWrite(true);
+    pin_->digital_write(true);
     //_pin_->digitalWrite( HIGH);    
 }
 
