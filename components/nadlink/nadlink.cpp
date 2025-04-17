@@ -68,89 +68,93 @@ void NADLink::volume_up() {
 }
 
 void NADLink::volume_down() {
-      ESP_LOGD(TAG, "Volume Down");
-      send_command(decrease_volume, false);
-  }
+    ESP_LOGD(TAG, "Volume Down");
+    send_command(decrease_volume, false);
+}
   
-  // Toggle mute function
-  void NADLink::toggle_mute() {
-      ESP_LOGD(TAG, "Toggling Mute");
-      send_command(toggle_mute_cmd);
-  }
+// Toggle mute function
+void NADLink::toggle_mute() {
+    ESP_LOGD(TAG, "Toggling Mute");
+    send_command(toggle_mute_cmd);
+}
   
-  // Power control functions
-  void NADLink::toggle_standby() {
-      ESP_LOGD(TAG, "Toggling standby state");
-      send_command(toggle_standby_cmd);
-  }
-
+// Power control functions
+void NADLink::toggle_standby() {
+    ESP_LOGD(TAG, "Toggling standby state");
+    send_command(toggle_standby_cmd);
+}
 
   // NADLink protocol implementation
-  void NADLink::pulse(int microseconds) {
-    // 0V (Logicalfalse)
-    pin_->digital_write(false);
-    delayMicroseconds(microseconds);
-  }
+void NADLink::pulse(int microseconds) {
+  // 0V (Logicalfalse)
+  pin_->digital_write(false);
+  delayMicroseconds(microseconds);
+}
 
-  void NADLink::flat(int microseconds) {
-    // +3.3V (Logicaltrue)
+void NADLink::flat(int microseconds) {
+    // +5.0V (+3.3V) (Logicaltrue)
     pin_->digital_write(true);
     delayMicroseconds(microseconds);
-  }
+}
 
-  // Preamble
-  void NADLink::command_preamble() {
+// Preamble
+void NADLink::command_preamble() {
+    ESP_LOGV(TAG, "Sending command preamble");
     pulse(9000);  // 9000 μs pulse
     flat(4500);   // 4500 μs flat
-  }
+}
 
-  // Command Terminator
-  void NADLink::command_terminator() {
+// Command Terminator
+void NADLink::command_terminator() {
+    ESP_LOGV(TAG, "Sending command terminator");
     pulse(560);   //   560 μs pulse
     flat(42020);  // 42020 μs flat
-  }
+}
 
-  // Sends the repeat signal
-  void NADLink::send_repeat() {
+// Sends the repeat signal
+void NADLink::send_repeat() {
+    ESP_LOGV(TAG, "Sending repeat command");
     pulse(9000);   //  9000 μs pulse
     flat(2250);    //  2250 μs flat
     pulse(560);    //   560 μs pulse
     flat(98190);   // 98190 μs flat
-  }
+}
 
-  void NADLink::send_one_bit() {
+void NADLink::send_one_bit() {
     pulse(560);   //  560 μs pulse
     flat(1690);   // 1690 μs flat
-  }
+}
 
-  void NADLink::send_zero_bit() {
+void NADLink::send_zero_bit() {
     pulse(560);   // 560 μs pulse
     flat(560);    //  560 μs flat
-  }
+}
 
-  void NADLink::send_byte(uint8_t data_byte) {
+void NADLink::send_byte(uint8_t data_byte) {
+    ESP_LOGVV(TAG, "Seding byte %02hhX", data_byte);
     for (uint8_t mask = 0x01; mask > 0; mask <<= 1) {  // iterate through a bit mask
-      if (data_byte & mask) {
-        send_one_bit();
-      } else {
-        send_zero_bit();
-      }
+        if (data_byte & mask) {
+            send_one_bit();
+        } else {
+          send_zero_bit();
+        }
     }
-  }
+}
 
-  void NADLink::send_byte_and_inverse(uint8_t data_byte) {
+void NADLink::send_byte_and_inverse(uint8_t data_byte) {
     send_byte(data_byte);
     send_byte(~data_byte);
-  }
+}
 
-  // Sends a complete command
-    // void NADLink::send_command(uint8_t command, bool pause_before_and_after_command = true) {
+// Sends a complete command
 void NADLink::send_command(uint8_t command, bool pause_before_and_after_command) {
+    ESP_LOGV(TAG, "Sending commmand with byte value %02hhX", command);
     int pause_length_in_ms = 250;
 
     // Pause before command
     if (pause_before_and_after_command) {
-      delay(pause_length_in_ms);
+        ESP_LOGV(TAG, "Pausing before commmand");
+        delay(pause_length_in_ms);
     }
 
     // Send preamble signal
@@ -168,51 +172,48 @@ void NADLink::send_command(uint8_t command, bool pause_before_and_after_command)
 
     // Pause after command
     if (pause_before_and_after_command) {
-      delay(pause_length_in_ms);
+        ESP_LOGV(TAG, "Pausing after commmand");
+        delay(pause_length_in_ms);
     }
-  }
+}
 
-  void NADLink::change_volume_to_default() {
+void NADLink::change_volume_to_default() {
     // Returns the volume control to default level
     send_command(increase_volume, false);
     for (int i = 0; i < (113 * default_volume_level / 11); ++i) {
-      send_repeat();
+          send_repeat();
     }
-  }
+}
 
-  void NADLink::change_volume_to_zero() {
+void NADLink::change_volume_to_zero() {
     // Sets the volume to zero
     send_command(decrease_volume, false);
     for (int i = 0; i < (113 * default_volume_level / 11 + 5); ++i) {
-      send_repeat();
+        send_repeat();
     }
   }
 
-  void NADLink::toggle_speakers_a_b() {
+void NADLink::toggle_speakers_a_b() {
     // Toggles the speakers (assumes exactly one is on and one is off)
     send_command(toggle_speaker_a);
     send_command(toggle_speaker_b);
-  }
+}
 
-  void NADLink::turn_on() {
+void NADLink::turn_on() {
     // Power up
     send_command(power_on);
     // Wait 4s for the amp to power up and turn on the inputs
     delay(4000);
     // Volume to default
     change_volume_to_default();
-  }
+}
 
-  void NADLink::turn_off() {
+void NADLink::turn_off() {
     // Volume to zero
     change_volume_to_zero();
     // Power down
     send_command(power_off);
-  }
-
-
-// Volume Up Button
-//NADLinkVolumeUpButton::NADLinkVolumeUpButton() : button::Button {}
+}
 
 NADLinkVolumeUpButton::NADLinkVolumeUpButton(NADLink *parent) : parent_(parent) {}
 
@@ -220,17 +221,11 @@ void NADLinkVolumeUpButton::press_action() {
     parent_->volume_up();
 }
 
-// Volume Down Button
-//NADLinkVolumeDownButton::NADLinkVolumeDownButton() : button::Button {}
-    
 NADLinkVolumeDownButton::NADLinkVolumeDownButton(NADLink *parent) : parent_(parent) {}
 
 void NADLinkVolumeDownButton::press_action() {
     parent_->volume_down();
 }
-
-// Mute Toggle Button
-//NADLinkMuteToggleButton::NADLinkMuteToggleButton(): button::Button {}
 
 NADLinkMuteToggleButton::NADLinkMuteToggleButton(NADLink *parent) : parent_(parent) {}
 
@@ -238,10 +233,7 @@ void NADLinkMuteToggleButton::press_action() {
     parent_->toggle_mute();
 }
 
-// Power Toggle Button
-//NADLinkStandbyToggleButton::NADLinkStandbyToggleButton() : button::Button {}
-
- NADLinkStandbyToggleButton::NADLinkStandbyToggleButton(NADLink *parent) : parent_(parent) {}
+NADLinkStandbyToggleButton::NADLinkStandbyToggleButton(NADLink *parent) : parent_(parent) {}
 
 void NADLinkStandbyToggleButton::press_action() {
     parent_->toggle_standby();
