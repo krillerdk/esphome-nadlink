@@ -16,6 +16,13 @@ void NADLink::setup() {
     //_pin_->digitalWrite( HIGH);    
 }
 
+void NADLink:dump_config() {
+    ESP_LOGCONFIG(TAG, "nadlink:");
+    LOG_PIN(" Output pin: ",this->pin_);
+    ESP_LOGCONFIG(TAG,  "NAD address 1: %02hhX", nad_c_740_address_1);
+    ESP_LOGCONFIG(TAG,  "NAD address 2: %02hhX", nad_c_740_address_2);
+}
+    
 float NADLink::get_setup_priority() const {
     return setup_priority::HARDWARE;
 }
