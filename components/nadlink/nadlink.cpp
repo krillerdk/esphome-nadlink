@@ -84,7 +84,7 @@ void NADLink::toggle_standby() {
     send_command(toggle_standby_cmd);
 }
 
-  // NADLink protocol implementation
+// NADLink protocol implementation
 void NADLink::pulse(int microseconds) {
   // 0V (Logicalfalse)
   pin_->digital_write(false);
@@ -131,12 +131,12 @@ void NADLink::send_zero_bit() {
 }
 
 void NADLink::send_byte(uint8_t data_byte) {
-    ESP_LOGVV(TAG, "Seding byte %02hhX", data_byte);
+    ESP_LOGVV(TAG, "Sending byte %02hhX", data_byte);
     for (uint8_t mask = 0x01; mask > 0; mask <<= 1) {  // iterate through a bit mask
         if (data_byte & mask) {
             send_one_bit();
         } else {
-          send_zero_bit();
+            send_zero_bit();
         }
     }
 }
@@ -160,6 +160,7 @@ void NADLink::send_command(uint8_t command, bool pause_before_and_after_command)
     // Send preamble signal
     command_preamble();
 
+    ESP_LOGV(TAG, "Sending NAD address");
     // Send address part 1 and 2
     send_byte(nad_c_740_address_1);
     send_byte(nad_c_740_address_2);
