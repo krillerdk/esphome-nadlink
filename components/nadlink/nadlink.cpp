@@ -10,7 +10,7 @@ NADLink::NADLink() {}
 
 void NADLink::setup() {
     pin_->setup();
-    pin_->pin_mode(FLAG_OUTPUT);
+    pin_->pin_mode(esphome::gpio::FLAG_OUTPUT);
     pin_->digital_write(true);
 }
 
