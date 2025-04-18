@@ -34,7 +34,10 @@ class NADLink : public Component {
   
   // Power control method
   void toggle_standby();
-  
+
+  // Allow exposing this as a service. Should probably be a wrapper class that takes of typecasting from int to char.
+  void send_command(uint8_t command, bool pause_before_and_after_command = true);
+    
  protected:
 
   GPIOPin *pin_{nullptr};
@@ -79,7 +82,6 @@ class NADLink : public Component {
   void send_zero_bit();
   void send_byte(uint8_t data_byte);
   void send_byte_and_inverse(uint8_t data_byte);
-  void send_command(uint8_t command, bool pause_before_and_after_command = true);
   void change_volume_to_default();
   void change_volume_to_zero();
   void toggle_speakers_a_b();
