@@ -1,3 +1,5 @@
+import random
+import string
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import button, select
@@ -5,12 +7,9 @@ from esphome.const import (
     CONF_ID,
     CONF_PIN,
     CONF_INPUT,
-    CONF_ICON,
-    CONF_NAME,
 )
 from esphome import pins
-import random
-import string
+
 
 
 #DEPENDENCIES = ["gpio"]
@@ -115,33 +114,33 @@ async def to_code(config):
     pin = await cg.gpio_pin_expression(config[CONF_PIN])
     cg.add(var.set_nadlink_pin(pin))
     
-    # Generate a unique string ID and use cv.declare_id to create a proper ID object
-    def generate_safe_id(component_type):
-        random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
-        id_string = f"{config[CONF_ID].id}_{component_type}_{random_suffix}"
-        # Create a proper ID object using ESPHome's built-in ID declaration
-        id_obj = cv.declare_id(component_type.split('_')[0])(id_string)()
-        return id_obj
+    # Generate a random string to append to our IDs to make them unique
+    def generate_random_suffix():
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
     
     # Volume buttons
     if config[CONF_VOLUME_BUTTONS]:
         # Volume Up button
         if CONF_VOLUME_UP in config:
-            vol_up = cg.new_Pvariable(config[CONF_VOLUME_UP][CONF_ID], var)  # Pass parent to constructor
+            vol_up = cg.new_Pvariable(config[CONF_VOLUME_UP][CONF_ID], var)
             await button.register_button(vol_up, config[CONF_VOLUME_UP])
         else:
-            vol_up_id = generate_safe_id("volume_up_button")
-            vol_up = cg.new_Pvariable(vol_up_id, var)  # Pass parent to constructor
+            # Create a unique ID string (not an ID object)
+            vol_up_id_str = f"{config[CONF_ID].id}_volume_up_{generate_random_suffix()}"
+            # Register this string directly with CORE.id
+            vol_up_id = cg.id(vol_up_id_str)
+            vol_up = cg.new_Pvariable(vol_up_id, var)
             cg.add(vol_up.set_name(DEFAULT_NAMES[CONF_VOLUME_UP]))
             cg.add(vol_up.set_icon(DEFAULT_ICONS[CONF_VOLUME_UP]))
             await button.register_button(vol_up, {})
         
-        # Volume Down button - similar pattern for other buttons
+        # Volume Down button
         if CONF_VOLUME_DOWN in config:
             vol_down = cg.new_Pvariable(config[CONF_VOLUME_DOWN][CONF_ID], var)
             await button.register_button(vol_down, config[CONF_VOLUME_DOWN])
         else:
-            vol_down_id = generate_safe_id("volume_down_button")
+            vol_down_id_str = f"{config[CONF_ID].id}_volume_down_{generate_random_suffix()}"
+            vol_down_id = cg.id(vol_down_id_str)
             vol_down = cg.new_Pvariable(vol_down_id, var)
             cg.add(vol_down.set_name(DEFAULT_NAMES[CONF_VOLUME_DOWN]))
             cg.add(vol_down.set_icon(DEFAULT_ICONS[CONF_VOLUME_DOWN]))
@@ -153,7 +152,8 @@ async def to_code(config):
             mute = cg.new_Pvariable(config[CONF_TOGGLE_MUTE][CONF_ID], var)
             await button.register_button(mute, config[CONF_TOGGLE_MUTE])
         else:
-            mute_id = generate_safe_id("mute_toggle_button")
+            mute_id_str = f"{config[CONF_ID].id}_mute_toggle_{generate_random_suffix()}"
+            mute_id = cg.id(mute_id_str)
             mute = cg.new_Pvariable(mute_id, var)
             cg.add(mute.set_name(DEFAULT_NAMES[CONF_TOGGLE_MUTE]))
             cg.add(mute.set_icon(DEFAULT_ICONS[CONF_TOGGLE_MUTE]))
@@ -165,7 +165,8 @@ async def to_code(config):
             standby = cg.new_Pvariable(config[CONF_TOGGLE_STANDBY][CONF_ID], var)
             await button.register_button(standby, config[CONF_TOGGLE_STANDBY])
         else:
-            standby_id = generate_safe_id("standby_toggle_button")
+            standby_id_str = f"{config[CONF_ID].id}_standby_toggle_{generate_random_suffix()}"
+            standby_id = cg.id(standby_id_str)
             standby = cg.new_Pvariable(standby_id, var)
             cg.add(standby.set_name(DEFAULT_NAMES[CONF_TOGGLE_STANDBY]))
             cg.add(standby.set_icon(DEFAULT_ICONS[CONF_TOGGLE_STANDBY]))
@@ -178,7 +179,8 @@ async def to_code(config):
             power_on = cg.new_Pvariable(config[CONF_POWER_ON][CONF_ID], var)
             await button.register_button(power_on, config[CONF_POWER_ON])
         else:
-            power_on_id = generate_safe_id("power_on_button")
+            power_on_id_str = f"{config[CONF_ID].id}_power_on_{generate_random_suffix()}"
+            power_on_id = cg.id(power_on_id_str)
             power_on = cg.new_Pvariable(power_on_id, var)
             cg.add(power_on.set_name(DEFAULT_NAMES[CONF_POWER_ON]))
             cg.add(power_on.set_icon(DEFAULT_ICONS[CONF_POWER_ON]))
@@ -189,7 +191,8 @@ async def to_code(config):
             power_off = cg.new_Pvariable(config[CONF_POWER_OFF][CONF_ID], var)
             await button.register_button(power_off, config[CONF_POWER_OFF])
         else:
-            power_off_id = generate_safe_id("power_off_button")
+            power_off_id_str = f"{config[CONF_ID].id}_power_off_{generate_random_suffix()}"
+            power_off_id = cg.id(power_off_id_str)
             power_off = cg.new_Pvariable(power_off_id, var)
             cg.add(power_off.set_name(DEFAULT_NAMES[CONF_POWER_OFF]))
             cg.add(power_off.set_icon(DEFAULT_ICONS[CONF_POWER_OFF]))
@@ -201,8 +204,9 @@ async def to_code(config):
             input_select = cg.new_Pvariable(config[CONF_INPUT][CONF_ID], var)
             await select.register_select(input_select, config[CONF_INPUT])
         else:
-            input_select_id = generate_safe_id("input_select")
-            input_select = cg.new_Pvariable(input_select_id, var)
+            input_id_str = f"{config[CONF_ID].id}_input_{generate_random_suffix()}"
+            input_id = cg.id(input_id_str)
+            input_select = cg.new_Pvariable(input_id, var)
             cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))
             cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
             await select.register_select(input_select, {})
