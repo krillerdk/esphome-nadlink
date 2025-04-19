@@ -10,7 +10,7 @@ from esphome.const import (
 )
 from esphome import pins
 
-DEPENDENCIES = ["gpio"]
+#DEPENDENCIES = ["gpio"]
 AUTO_LOAD = ["button", "select"]
 
 # Create namespace for component
