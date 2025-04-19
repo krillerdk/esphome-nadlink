@@ -155,7 +155,7 @@ void NADLink::send_byte_and_inverse(uint8_t data_byte) {
 void NADLink::send_command(uint8_t command, bool pause_before_and_after_command) {
     ESP_LOGV(TAG, "Sending commmand with byte value %02hhX", command);
     int pause_length_in_ms = 250;
-
+    
     // Pause before command
     if (pause_before_and_after_command) {
         ESP_LOGV(TAG, "Pausing before commmand");
@@ -187,7 +187,7 @@ void NADLink::change_volume_to_default() {
     // Returns the volume control to default level
     send_command(increase_volume, false);
     for (int i = 0; i < (113 * default_volume_level / 11); ++i) {
-          send_repeat();
+        send_repeat();
     }
 }
 
@@ -197,7 +197,7 @@ void NADLink::change_volume_to_zero() {
     for (int i = 0; i < (113 * default_volume_level / 11 + 5); ++i) {
         send_repeat();
     }
-  }
+}
 
 void NADLink::toggle_speakers_a_b() {
     // Toggles the speakers (assumes exactly one is on and one is off)
@@ -243,6 +243,54 @@ NADLinkStandbyToggleButton::NADLinkStandbyToggleButton(NADLink *parent) : parent
 
 void NADLinkStandbyToggleButton::press_action() {
     parent_->toggle_standby();
+}
+
+NADLinkPowerOnButton::NADLinkPowerOnButton(NADLink *parent) : parent_(parent) {}
+
+void NADLinkPowerOnButton::press_action() {
+    parent_->turn_on();
+}
+
+NADLinkPowerOffButton::NADLinkPowerOffButton(NADLink *parent) : parent_(parent) {}
+
+void NADLinkPowerOffButton::press_action() {
+    parent_->turn_off();
+}
+
+NADLinkInputSelectButton::NADLinkInputSelect(NADLink *parent) : parent_(parent) {
+    this->traits.set_options({"Unknown", "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"});
+}
+
+void NADLinkInputSelect::setup() {
+    this->publish_state("Unknown");
+}
+
+void NADLinkInputSelect::control(std::string &value) {
+    if (value == "Unknown"){
+        ESP_LOGI(TAG, "Dummy value \"Unknown\" provided. No action taken.");
+    } else if (value == "Tape 1") {
+        parent_->switch_to_tape_1();
+    } else if (value == "Tape 2") {
+        parent_->switch_to_tape_2();
+    } else if (value == "Tuner") {
+        parent_->switch_to_tuner();
+    } else if (value == "Aux") {
+        parent_->switch_to_aux();
+    } else if (value == "Video") {
+        parent_->switch_to_video();
+    } else if (value == "CD") {
+        parent_->switch_to_cd();
+    } else if (value == "Disc") {
+        parent_->switch_to_disc();
+    }
+    else {
+        ESP_LOGE(TAG, "Invalid input selection: %s", value.c_str());
+    }
+    this->publish_state("Unknown");
+}
+
+optional<size_t> active_index() const {
+    return this->indexOf("Unknown");
 }
 
 }  // namespace nadlink
