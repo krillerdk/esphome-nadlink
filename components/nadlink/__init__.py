@@ -126,7 +126,7 @@ async def to_code(config):
             await button.register_button(vol_up, config[CONF_VOLUME_UP])
         else:
             # Create a unique ID string (not an ID object)
-            vol_up_id_str = f"{config[CONF_ID].id}_volume_up_{generate_random_suffix()}"
+            vol_up_id_str = f"{config[CONF_ID]}_volume_up_{generate_random_suffix()}"
             # Register this string directly with CORE.id
             vol_up_id = cg.id(vol_up_id_str)
             vol_up = cg.new_Pvariable(vol_up_id, var)
@@ -139,7 +139,7 @@ async def to_code(config):
             vol_down = cg.new_Pvariable(config[CONF_VOLUME_DOWN][CONF_ID], var)
             await button.register_button(vol_down, config[CONF_VOLUME_DOWN])
         else:
-            vol_down_id_str = f"{config[CONF_ID].id}_volume_down_{generate_random_suffix()}"
+            vol_down_id_str = f"{config[CONF_ID]}_volume_down_{generate_random_suffix()}"
             vol_down_id = cg.id(vol_down_id_str)
             vol_down = cg.new_Pvariable(vol_down_id, var)
             cg.add(vol_down.set_name(DEFAULT_NAMES[CONF_VOLUME_DOWN]))
@@ -152,7 +152,7 @@ async def to_code(config):
             mute = cg.new_Pvariable(config[CONF_TOGGLE_MUTE][CONF_ID], var)
             await button.register_button(mute, config[CONF_TOGGLE_MUTE])
         else:
-            mute_id_str = f"{config[CONF_ID].id}_mute_toggle_{generate_random_suffix()}"
+            mute_id_str = f"{config[CONF_ID]}_mute_toggle_{generate_random_suffix()}"
             mute_id = cg.id(mute_id_str)
             mute = cg.new_Pvariable(mute_id, var)
             cg.add(mute.set_name(DEFAULT_NAMES[CONF_TOGGLE_MUTE]))
@@ -165,7 +165,7 @@ async def to_code(config):
             standby = cg.new_Pvariable(config[CONF_TOGGLE_STANDBY][CONF_ID], var)
             await button.register_button(standby, config[CONF_TOGGLE_STANDBY])
         else:
-            standby_id_str = f"{config[CONF_ID].id}_standby_toggle_{generate_random_suffix()}"
+            standby_id_str = f"{config[CONF_ID]}_standby_toggle_{generate_random_suffix()}"
             standby_id = cg.id(standby_id_str)
             standby = cg.new_Pvariable(standby_id, var)
             cg.add(standby.set_name(DEFAULT_NAMES[CONF_TOGGLE_STANDBY]))
@@ -179,7 +179,7 @@ async def to_code(config):
             power_on = cg.new_Pvariable(config[CONF_POWER_ON][CONF_ID], var)
             await button.register_button(power_on, config[CONF_POWER_ON])
         else:
-            power_on_id_str = f"{config[CONF_ID].id}_power_on_{generate_random_suffix()}"
+            power_on_id_str = f"{config[CONF_ID]}_power_on_{generate_random_suffix()}"
             power_on_id = cg.id(power_on_id_str)
             power_on = cg.new_Pvariable(power_on_id, var)
             cg.add(power_on.set_name(DEFAULT_NAMES[CONF_POWER_ON]))
@@ -191,7 +191,7 @@ async def to_code(config):
             power_off = cg.new_Pvariable(config[CONF_POWER_OFF][CONF_ID], var)
             await button.register_button(power_off, config[CONF_POWER_OFF])
         else:
-            power_off_id_str = f"{config[CONF_ID].id}_power_off_{generate_random_suffix()}"
+            power_off_id_str = f"{config[CONF_ID]}_power_off_{generate_random_suffix()}"
             power_off_id = cg.id(power_off_id_str)
             power_off = cg.new_Pvariable(power_off_id, var)
             cg.add(power_off.set_name(DEFAULT_NAMES[CONF_POWER_OFF]))
@@ -204,7 +204,7 @@ async def to_code(config):
             input_select = cg.new_Pvariable(config[CONF_INPUT][CONF_ID], var)
             await select.register_select(input_select, config[CONF_INPUT])
         else:
-            input_id_str = f"{config[CONF_ID].id}_input_{generate_random_suffix()}"
+            input_id_str = f"{config[CONF_ID]}_input_{generate_random_suffix()}"
             input_id = cg.id(input_id_str)
             input_select = cg.new_Pvariable(input_id, var)
             cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))

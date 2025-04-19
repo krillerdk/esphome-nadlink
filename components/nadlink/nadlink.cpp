@@ -257,7 +257,7 @@ void NADLinkPowerOffButton::press_action() {
     parent_->turn_off();
 }
 
-NADLinkInputSelectButton::NADLinkInputSelect(NADLink *parent) : parent_(parent) {
+NADLinkInputSelect::NADLinkInputSelect(NADLink *parent) : parent_(parent) {
     this->traits.set_options({"Unknown", "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"});
 }
 
@@ -265,7 +265,7 @@ void NADLinkInputSelect::setup() {
     this->publish_state("Unknown");
 }
 
-void NADLinkInputSelect::control(std::string &value) {
+void NADLinkInputSelect::control(const std::string &value) const{
     if (value == "Unknown"){
         ESP_LOGI(TAG, "Dummy value \"Unknown\" provided. No action taken.");
     } else if (value == "Tape 1") {
@@ -289,7 +289,7 @@ void NADLinkInputSelect::control(std::string &value) {
     this->publish_state("Unknown");
 }
 
-optional<size_t> active_index() const {
+optional<size_t> NADLinkInputSelect::active_index() const {
     return this->indexOf("Unknown");
 }
 

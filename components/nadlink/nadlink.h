@@ -94,6 +94,7 @@ protected:
 class NADLinkVolumeUpButton : public button::Button {
 public:
     explicit NADLinkVolumeUpButton(NADLink *parent);
+    void 
 protected:
     void press_action() override;
     NADLink *parent_;
@@ -110,6 +111,7 @@ protected:
 class NADLinkMuteToggleButton : public button::Button {
 public:
     explicit NADLinkMuteToggleButton(NADLink *parent);
+    
 protected:
     void press_action() override;
     NADLink *parent_;
@@ -146,7 +148,7 @@ public:
     optional<size_t> active_index() const override;
 protected:
     NADLink *parent_;
-    void control(const std::string &value) = 0 override;
+    void control(const std::string &value) = 0 const override;
 };
 
 }  // namespace nadlink
