@@ -67,7 +67,7 @@ DEFAULT_NAMES = {
 # Schema for the component
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(NADLink),
-    cv.Required(CONF_PIN): gpio.gpio_output_pin_schema,
+    cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
     
     # Component enable/disable flags (all enabled by default)
     cv.Optional(CONF_VOLUME_BUTTONS, default=True): cv.boolean,
