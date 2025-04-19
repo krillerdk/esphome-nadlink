@@ -119,7 +119,8 @@ async def to_code(config):
             return register_func(comp_var, comp_conf)
         else:
             # Create with default name and icon
-            comp_var = cg.new_Pvariable(cg.global_ns.add_progmem_string(f"{config[CONF_ID].id}_{comp_type}"), parent_var)
+            default_id = cg.declare_id(component_class)(f"{config[CONF_ID].id}_{comp_type}")
+            comp_var = cg.new_Pvariable(default_id, parent_var)
             default_conf = {
                 CONF_NAME: DEFAULT_NAMES.get(comp_type, f"NAD {comp_type.replace('_', ' ').title()}"),
                 CONF_ICON: DEFAULT_ICONS.get(comp_type, "mdi:audio"),
