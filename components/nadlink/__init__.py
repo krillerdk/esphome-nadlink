@@ -9,6 +9,9 @@ from esphome.const import (
     CONF_NAME,
 )
 from esphome import pins
+import random
+import string
+
 
 #DEPENDENCIES = ["gpio"]
 AUTO_LOAD = ["button", "select"]
@@ -102,6 +105,7 @@ CONFIG_SCHEMA = cv.Schema({
     }),
 }).extend(cv.COMPONENT_SCHEMA)
 
+
 async def to_code(config):
     # Create the main component
     var = cg.new_Pvariable(config[CONF_ID])
@@ -110,88 +114,95 @@ async def to_code(config):
     # Configure the NADLink pin
     pin = await cg.gpio_pin_expression(config[CONF_PIN])
     cg.add(var.set_nadlink_pin(pin))
-
-    # Helper function to create a component with default icons and names
-    def create_default_component(comp_type, conf, parent_var, component_class, register_func):
-        if comp_type in config:
-            comp_conf = config[comp_type]
-            comp_var = cg.new_Pvariable(comp_conf[CONF_ID], parent_var)
-            return register_func(comp_var, comp_conf)
-        else:
-            # Auto-generate ID safely
-            comp_var = cg.new_Pvariable(cg.generate_name(f"{config[CONF_ID].id}_{comp_type}"), parent_var)
-            default_conf = {
-                CONF_NAME: DEFAULT_NAMES.get(comp_type, f"NAD {comp_type.replace('_', ' ').title()}"),
-                CONF_ICON: DEFAULT_ICONS.get(comp_type, "mdi:audio"),
-            }
-            return register_func(comp_var, default_conf)
     
-    # Create and register volume buttons if enabled
+    # Generate a unique string ID and use cv.declare_id to create a proper ID object
+    def generate_safe_id(component_type):
+        random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+        id_string = f"{config[CONF_ID].id}_{component_type}_{random_suffix}"
+        # Create a proper ID object using ESPHome's built-in ID declaration
+        id_obj = cv.declare_id(component_type.split('_')[0])(id_string)()
+        return id_obj
+    
+    # Volume buttons
     if config[CONF_VOLUME_BUTTONS]:
         # Volume Up button
-        await create_default_component(
-            CONF_VOLUME_UP, 
-            config, 
-            var, 
-            NADLinkVolumeUpButton, 
-            button.register_button
-        )
+        if CONF_VOLUME_UP in config:
+            vol_up = cg.new_Pvariable(config[CONF_VOLUME_UP][CONF_ID], var)  # Pass parent to constructor
+            await button.register_button(vol_up, config[CONF_VOLUME_UP])
+        else:
+            vol_up_id = generate_safe_id("volume_up_button")
+            vol_up = cg.new_Pvariable(vol_up_id, var)  # Pass parent to constructor
+            cg.add(vol_up.set_name(DEFAULT_NAMES[CONF_VOLUME_UP]))
+            cg.add(vol_up.set_icon(DEFAULT_ICONS[CONF_VOLUME_UP]))
+            await button.register_button(vol_up, {})
         
-        # Volume Down button
-        await create_default_component(
-            CONF_VOLUME_DOWN, 
-            config, 
-            var, 
-            NADLinkVolumeDownButton, 
-            button.register_button
-        )
-
-    # Toggle Mute button if enabled
+        # Volume Down button - similar pattern for other buttons
+        if CONF_VOLUME_DOWN in config:
+            vol_down = cg.new_Pvariable(config[CONF_VOLUME_DOWN][CONF_ID], var)
+            await button.register_button(vol_down, config[CONF_VOLUME_DOWN])
+        else:
+            vol_down_id = generate_safe_id("volume_down_button")
+            vol_down = cg.new_Pvariable(vol_down_id, var)
+            cg.add(vol_down.set_name(DEFAULT_NAMES[CONF_VOLUME_DOWN]))
+            cg.add(vol_down.set_icon(DEFAULT_ICONS[CONF_VOLUME_DOWN]))
+            await button.register_button(vol_down, {})
+    
+    # Mute button
     if config[CONF_MUTE_BUTTON]:
-        await create_default_component(
-            CONF_TOGGLE_MUTE, 
-            config, 
-            var, 
-            NADLinkMuteToggleButton, 
-            button.register_button
-        )
+        if CONF_TOGGLE_MUTE in config:
+            mute = cg.new_Pvariable(config[CONF_TOGGLE_MUTE][CONF_ID], var)
+            await button.register_button(mute, config[CONF_TOGGLE_MUTE])
+        else:
+            mute_id = generate_safe_id("mute_toggle_button")
+            mute = cg.new_Pvariable(mute_id, var)
+            cg.add(mute.set_name(DEFAULT_NAMES[CONF_TOGGLE_MUTE]))
+            cg.add(mute.set_icon(DEFAULT_ICONS[CONF_TOGGLE_MUTE]))
+            await button.register_button(mute, {})
     
-    # Toggle Standby button if enabled
+    # Standby button
     if config[CONF_STANDBY_BUTTON]:
-        await create_default_component(
-            CONF_TOGGLE_STANDBY, 
-            config, 
-            var, 
-            NADLinkStandbyToggleButton, 
-            button.register_button
-        )
+        if CONF_TOGGLE_STANDBY in config:
+            standby = cg.new_Pvariable(config[CONF_TOGGLE_STANDBY][CONF_ID], var)
+            await button.register_button(standby, config[CONF_TOGGLE_STANDBY])
+        else:
+            standby_id = generate_safe_id("standby_toggle_button")
+            standby = cg.new_Pvariable(standby_id, var)
+            cg.add(standby.set_name(DEFAULT_NAMES[CONF_TOGGLE_STANDBY]))
+            cg.add(standby.set_icon(DEFAULT_ICONS[CONF_TOGGLE_STANDBY]))
+            await button.register_button(standby, {})
     
-    # Power buttons if enabled
+    # Power buttons
     if config[CONF_POWER_BUTTONS]:
         # Power On button
-        await create_default_component(
-            CONF_POWER_ON, 
-            config, 
-            var, 
-            NADLinkPowerOnButton, 
-            button.register_button
-        )
+        if CONF_POWER_ON in config:
+            power_on = cg.new_Pvariable(config[CONF_POWER_ON][CONF_ID], var)
+            await button.register_button(power_on, config[CONF_POWER_ON])
+        else:
+            power_on_id = generate_safe_id("power_on_button")
+            power_on = cg.new_Pvariable(power_on_id, var)
+            cg.add(power_on.set_name(DEFAULT_NAMES[CONF_POWER_ON]))
+            cg.add(power_on.set_icon(DEFAULT_ICONS[CONF_POWER_ON]))
+            await button.register_button(power_on, {})
         
         # Power Off button
-        await create_default_component(
-            CONF_POWER_OFF, 
-            config, 
-            var, 
-            NADLinkPowerOffButton, 
-            button.register_button
-        )
+        if CONF_POWER_OFF in config:
+            power_off = cg.new_Pvariable(config[CONF_POWER_OFF][CONF_ID], var)
+            await button.register_button(power_off, config[CONF_POWER_OFF])
+        else:
+            power_off_id = generate_safe_id("power_off_button")
+            power_off = cg.new_Pvariable(power_off_id, var)
+            cg.add(power_off.set_name(DEFAULT_NAMES[CONF_POWER_OFF]))
+            cg.add(power_off.set_icon(DEFAULT_ICONS[CONF_POWER_OFF]))
+            await button.register_button(power_off, {})
     
-    # Input Select if enabled
+    # Input Select
     if config[CONF_INPUT_SELECT]:
-        await create_default_component(
-            CONF_INPUT, 
-            config, 
-            var, 
-            NADLinkInputSelect, 
-            select.register_select
-        )
+        if CONF_INPUT in config:
+            input_select = cg.new_Pvariable(config[CONF_INPUT][CONF_ID], var)
+            await select.register_select(input_select, config[CONF_INPUT])
+        else:
+            input_select_id = generate_safe_id("input_select")
+            input_select = cg.new_Pvariable(input_select_id, var)
+            cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))
+            cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
+            await select.register_select(input_select, {})
