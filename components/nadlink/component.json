@@ -12,7 +12,7 @@
       "name": "nadlink",
       "description": "Control NAD amplifiers via the NADLink IR protocol",
       "platforms": ["esp8266", "esp32"],
-      "dependencies": [ "button" ]
+      "dependencies": [ "button,select" ]
     }
   ]
 }
