@@ -6,6 +6,8 @@ from esphome.const import (
     CONF_PIN,
     CONF_INPUT,
     CONF_NAME,
+    CONF_ICON,
+    DISABLED_BY_DEFAULT,
 )
 from esphome import pins
 
@@ -144,7 +146,9 @@ async def to_code(config):
             cg.add(vol_up.set_icon(DEFAULT_ICONS[CONF_VOLUME_UP]))
             await button.register_button(vol_up, {
                 CONF_ID: vol_up_id,
-                CONF_NAME: DEFAULT_NAMES[CONF_VOLUME_UP]
+                CONF_NAME: DEFAULT_NAMES[CONF_VOLUME_UP],
+                CONF_ICON: DEFAULT_ICONS[CONF_VOLUME_UP],
+                DISABLED_BY_DEFAULT: False
             })
         
         # Volume Down button
@@ -160,7 +164,9 @@ async def to_code(config):
             cg.add(vol_down.set_icon(DEFAULT_ICONS[CONF_VOLUME_DOWN]))
             await button.register_button(vol_down, {
                 CONF_ID: vol_down_id,
-                CONF_NAME: DEFAULT_NAMES[CONF_VOLUME_DOWN]
+                CONF_NAME: DEFAULT_NAMES[CONF_VOLUME_DOWN],
+                CONF_ICON: DEFAULT_ICONS[CONF_VOLUME_DOWN],
+                DISABLED_BY_DEFAULT: False
             })
     
     # Mute button
@@ -177,7 +183,8 @@ async def to_code(config):
             cg.add(mute.set_icon(DEFAULT_ICONS[CONF_TOGGLE_MUTE]))
             await button.register_button(mute, {
                 CONF_ID: mute_id,
-                CONF_NAME: DEFAULT_NAMES[CONF_TOGGLE_MUTE]
+                CONF_NAME: DEFAULT_NAMES[CONF_TOGGLE_MUTE],
+                DISABLED_BY_DEFAULT: False
             })
     
     # Standby button
@@ -194,7 +201,9 @@ async def to_code(config):
             cg.add(standby.set_icon(DEFAULT_ICONS[CONF_TOGGLE_STANDBY]))
             await button.register_button(standby, {
                 CONF_ID: standby_id,
-                CONF_NAME: DEFAULT_NAMES[CONF_TOGGLE_STANDBY]
+                CONF_NAME: DEFAULT_NAMES[CONF_TOGGLE_STANDBY],
+                CONF_ICON: DEFAULT_ICONS[CONF_TOGGLE_STANDBY],
+                DISABLED_BY_DEFAULT: False
             })
     
     # Power buttons
@@ -212,7 +221,9 @@ async def to_code(config):
             cg.add(power_on.set_icon(DEFAULT_ICONS[CONF_POWER_ON]))
             await button.register_button(power_on, {
                 CONF_ID: power_on_id,
-                CONF_NAME: DEFAULT_NAMES[CONF_POWER_ON]
+                CONF_NAME: DEFAULT_NAMES[CONF_POWER_ON],
+                CONF_ICON: DEFAULT_ICONS[CONF_POWER_ON]
+                DISABLED_BY_DEFAULT: False
             })
         
         # Power Off button
@@ -228,7 +239,9 @@ async def to_code(config):
             cg.add(power_off.set_icon(DEFAULT_ICONS[CONF_POWER_OFF]))
             await button.register_button(power_off, {
                 CONF_ID: power_off_id,
-                CONF_NAME: DEFAULT_NAMES[CONF_POWER_ON]
+                CONF_NAME: DEFAULT_NAMES[CONF_POWER_OFF],
+                CONF_ICON: DEFAULT_ICONS[CONF_POWER_OFF],
+                DISABLED_BY_DEFAULT: False
             })
     
     # Input Select
@@ -245,5 +258,7 @@ async def to_code(config):
             cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
             await select.register_select(input_select, {
                 CONF_ID:  input_id,
-                CONF_NAME: DEFAULT_NAMES[CONF_INPUT]
+                CONF_NAME: DEFAULT_NAMES[CONF_INPUT],
+                CONF_ICON: DEFAULT_ICONS[CONF_INPUT],
+                DISABLED_BY_DEFAULT: False
             })
