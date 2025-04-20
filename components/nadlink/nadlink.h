@@ -38,6 +38,9 @@ public:
 
     // Allow exposing this as a service. Should probably be a wrapper class that takes of typecasting from int to char.
     void send_command(uint8_t command, bool pause_before_and_after_command = true);
+
+    void turn_on();
+    void turn_off();
     
 protected:
 
@@ -86,8 +89,6 @@ protected:
     void change_volume_to_default();
     void change_volume_to_zero();
     void toggle_speakers_a_b();
-    void turn_on();
-    void turn_off();
 };
 
 // Button classes for control
