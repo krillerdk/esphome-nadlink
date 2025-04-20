@@ -74,7 +74,7 @@ DEFAULT_NAMES = {
     CONF_INPUT: "NAD Input Source",
 }
 
-DEFAULT_INPUTS = {}
+DEFAULT_INPUTS = { "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"}
 
 # Schema for the component
 CONFIG_SCHEMA = cv.Schema({
@@ -259,6 +259,7 @@ async def to_code(config):
             input_select = cg.new_Pvariable(input_id, var)
             cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))
             cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
+            cg.add(input_select.set_options(DEFAULT_INPUTS))
             await select.register_select(input_select, {
                 CONF_ID:  input_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_INPUT],
