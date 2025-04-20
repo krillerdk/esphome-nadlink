@@ -258,7 +258,7 @@ void NADLinkPowerOffButton::press_action() {
 }
 
 NADLinkInputSelect::NADLinkInputSelect(NADLink *parent) : parent_(parent) {
-    this->traits.set_options({"Unknown", "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"});
+    traits.set_options({"Unknown", "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"});
 }
 
 /*void NADLinkInputSelect::setup() {
