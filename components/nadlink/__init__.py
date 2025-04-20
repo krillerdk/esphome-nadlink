@@ -263,7 +263,7 @@ async def to_code(config):
             input_select = cg.new_Pvariable(input_id, var)
             cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))
             cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
-            cg.add(input_select.set_options(DEFAULT_INPUTS))
+            cg.add(input_select.traits.set_options(DEFAULT_INPUTS))
             await select.register_select(
                 input_select,
                 {
