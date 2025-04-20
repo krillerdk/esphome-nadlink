@@ -94,7 +94,6 @@ protected:
 class NADLinkVolumeUpButton : public button::Button {
 public:
     explicit NADLinkVolumeUpButton(NADLink *parent);
-    void 
 protected:
     void press_action() override;
     NADLink *parent_;
