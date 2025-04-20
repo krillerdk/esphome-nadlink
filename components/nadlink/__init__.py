@@ -264,5 +264,6 @@ async def to_code(config):
                 CONF_ID:  input_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_INPUT],
                 CONF_ICON: DEFAULT_ICONS[CONF_INPUT],
+                CONF_OPTIONS: DEFAULT_INPUTS,
                 CONF_DISABLED_BY_DEFAULT: False
-            }, options=config[CONF_OPTIONS])
+            })
