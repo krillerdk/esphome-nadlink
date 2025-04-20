@@ -5,9 +5,8 @@ from esphome.const import (
     CONF_ID,
     CONF_PIN,
     CONF_INPUT,
-    CONF_NAME,
     CONF_ICON,
-    DISABLED_BY_DEFAULT,
+    CONF_NAME,
 )
 from esphome import pins
 
@@ -142,14 +141,15 @@ async def to_code(config):
             if vol_up_id is None:
                 vol_up_id = cv.declare_id(NADLinkVolumeUpButton)(f"{config[CONF_ID].id}_volume_up")
             vol_up = cg.new_Pvariable(vol_up_id, var)
-            cg.add(vol_up.set_name(DEFAULT_NAMES[CONF_VOLUME_UP]))
-            cg.add(vol_up.set_icon(DEFAULT_ICONS[CONF_VOLUME_UP]))
-            await button.register_button(vol_up, {
+            
+            # Create a proper configuration dictionary for this button
+            vol_up_config = {
                 CONF_ID: vol_up_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_VOLUME_UP],
                 CONF_ICON: DEFAULT_ICONS[CONF_VOLUME_UP],
-                DISABLED_BY_DEFAULT: False
-            })
+            }
+            
+            await button.register_button(vol_up, vol_up_config)
         
         # Volume Down button
         if CONF_VOLUME_DOWN in config:
@@ -160,14 +160,14 @@ async def to_code(config):
             if vol_down_id is None:
                 vol_down_id = cv.declare_id(NADLinkVolumeDownButton)(f"{config[CONF_ID].id}_volume_down")
             vol_down = cg.new_Pvariable(vol_down_id, var)
-            cg.add(vol_down.set_name(DEFAULT_NAMES[CONF_VOLUME_DOWN]))
-            cg.add(vol_down.set_icon(DEFAULT_ICONS[CONF_VOLUME_DOWN]))
-            await button.register_button(vol_down, {
+            
+            vol_down_config = {
                 CONF_ID: vol_down_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_VOLUME_DOWN],
                 CONF_ICON: DEFAULT_ICONS[CONF_VOLUME_DOWN],
-                DISABLED_BY_DEFAULT: False
-            })
+            }
+            
+            await button.register_button(vol_down, vol_down_config)
     
     # Mute button
     if config[CONF_MUTE_BUTTON]:
@@ -179,13 +179,14 @@ async def to_code(config):
             if mute_id is None:
                 mute_id = cv.declare_id(NADLinkMuteToggleButton)(f"{config[CONF_ID].id}_mute_toggle")
             mute = cg.new_Pvariable(mute_id, var)
-            cg.add(mute.set_name(DEFAULT_NAMES[CONF_TOGGLE_MUTE]))
-            cg.add(mute.set_icon(DEFAULT_ICONS[CONF_TOGGLE_MUTE]))
-            await button.register_button(mute, {
+            
+            mute_config = {
                 CONF_ID: mute_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_TOGGLE_MUTE],
-                DISABLED_BY_DEFAULT: False
-            })
+                CONF_ICON: DEFAULT_ICONS[CONF_TOGGLE_MUTE],
+            }
+            
+            await button.register_button(mute, mute_config)
     
     # Standby button
     if config[CONF_STANDBY_BUTTON]:
@@ -197,14 +198,14 @@ async def to_code(config):
             if standby_id is None:
                 standby_id = cv.declare_id(NADLinkStandbyToggleButton)(f"{config[CONF_ID].id}_standby_toggle")
             standby = cg.new_Pvariable(standby_id, var)
-            cg.add(standby.set_name(DEFAULT_NAMES[CONF_TOGGLE_STANDBY]))
-            cg.add(standby.set_icon(DEFAULT_ICONS[CONF_TOGGLE_STANDBY]))
-            await button.register_button(standby, {
+            
+            standby_config = {
                 CONF_ID: standby_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_TOGGLE_STANDBY],
                 CONF_ICON: DEFAULT_ICONS[CONF_TOGGLE_STANDBY],
-                DISABLED_BY_DEFAULT: False
-            })
+            }
+            
+            await button.register_button(standby, standby_config)
     
     # Power buttons
     if config[CONF_POWER_BUTTONS]:
@@ -217,14 +218,14 @@ async def to_code(config):
             if power_on_id is None:
                 power_on_id = cv.declare_id(NADLinkPowerOnButton)(f"{config[CONF_ID].id}_power_on")
             power_on = cg.new_Pvariable(power_on_id, var)
-            cg.add(power_on.set_name(DEFAULT_NAMES[CONF_POWER_ON]))
-            cg.add(power_on.set_icon(DEFAULT_ICONS[CONF_POWER_ON]))
-            await button.register_button(power_on, {
+            
+            power_on_config = {
                 CONF_ID: power_on_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_POWER_ON],
                 CONF_ICON: DEFAULT_ICONS[CONF_POWER_ON],
-                DISABLED_BY_DEFAULT: False
-            })
+            }
+            
+            await button.register_button(power_on, power_on_config)
         
         # Power Off button
         if CONF_POWER_OFF in config:
@@ -235,14 +236,14 @@ async def to_code(config):
             if power_off_id is None:
                 power_off_id = cv.declare_id(NADLinkPowerOffButton)(f"{config[CONF_ID].id}_power_off")
             power_off = cg.new_Pvariable(power_off_id, var)
-            cg.add(power_off.set_name(DEFAULT_NAMES[CONF_POWER_OFF]))
-            cg.add(power_off.set_icon(DEFAULT_ICONS[CONF_POWER_OFF]))
-            await button.register_button(power_off, {
+            
+            power_off_config = {
                 CONF_ID: power_off_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_POWER_OFF],
                 CONF_ICON: DEFAULT_ICONS[CONF_POWER_OFF],
-                DISABLED_BY_DEFAULT: False
-            })
+            }
+            
+            await button.register_button(power_off, power_off_config)
     
     # Input Select
     if config[CONF_INPUT_SELECT]:
@@ -254,11 +255,11 @@ async def to_code(config):
             if input_id is None:
                 input_id = cv.declare_id(NADLinkInputSelect)(f"{config[CONF_ID].id}_input")
             input_select = cg.new_Pvariable(input_id, var)
-            cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))
-            cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
-            await select.register_select(input_select, {
-                CONF_ID:  input_id,
+            
+            input_config = {
+                CONF_ID: input_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_INPUT],
                 CONF_ICON: DEFAULT_ICONS[CONF_INPUT],
-                DISABLED_BY_DEFAULT: False
-            })
+            }
+            
+            await select.register_select(input_select, input_config)
