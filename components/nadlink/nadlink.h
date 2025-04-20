@@ -148,7 +148,7 @@ public:
     optional<size_t> active_index() const override;
 protected:
     NADLink *parent_;
-    void control(const std::string &value) = 0 const override;
+    void control(const std::string &value) const override;
 };
 
 }  // namespace nadlink
