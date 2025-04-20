@@ -261,9 +261,9 @@ NADLinkInputSelect::NADLinkInputSelect(NADLink *parent) : parent_(parent) {
     this->traits.set_options({"Unknown", "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"});
 }
 
-void NADLinkInputSelect::setup() {
+/*void NADLinkInputSelect::setup() {
     this->publish_state("Unknown");
-}
+    }*/
 
 void NADLinkInputSelect::control(const std::string &value) const{
     if (value == "Unknown"){
@@ -287,10 +287,6 @@ void NADLinkInputSelect::control(const std::string &value) const{
         ESP_LOGE(TAG, "Invalid input selection: %s", value.c_str());
     }
     this->publish_state("Unknown");
-}
-
-optional<size_t> NADLinkInputSelect::active_index() const {
-    return this->index_of("Unknown");
 }
 
 }  // namespace nadlink

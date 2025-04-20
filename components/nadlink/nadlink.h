@@ -144,8 +144,8 @@ protected:
 class NADLinkInputSelect : public select::Select {
 public:
     explicit NADLinkInputSelect(NADLink *parent);
-    void setup() override;
-    optional<size_t> active_index() const override;
+    //void setup() override;
+    //optional<size_t> active_index() const override;
 protected:
     NADLink *parent_;
     void control(const std::string &value) const override;
