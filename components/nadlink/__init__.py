@@ -222,7 +222,7 @@ async def to_code(config):
             await button.register_button(power_on, {
                 CONF_ID: power_on_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_POWER_ON],
-                CONF_ICON: DEFAULT_ICONS[CONF_POWER_ON]
+                CONF_ICON: DEFAULT_ICONS[CONF_POWER_ON],
                 DISABLED_BY_DEFAULT: False
             })
         
