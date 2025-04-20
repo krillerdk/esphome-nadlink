@@ -7,6 +7,7 @@ from esphome.const import (
     CONF_INPUT,
     CONF_NAME,
     CONF_ICON,
+    CONF_OPTIONS,
     CONF_DISABLED_BY_DEFAULT,
 )
 from esphome import pins
@@ -72,6 +73,8 @@ DEFAULT_NAMES = {
     CONF_POWER_OFF: "NAD Power Off",
     CONF_INPUT: "NAD Input Source",
 }
+
+DEFAULT_INPUTS = {}
 
 # Schema for the component
 CONFIG_SCHEMA = cv.Schema({
@@ -261,4 +264,4 @@ async def to_code(config):
                 CONF_NAME: DEFAULT_NAMES[CONF_INPUT],
                 CONF_ICON: DEFAULT_ICONS[CONF_INPUT],
                 CONF_DISABLED_BY_DEFAULT: False
-            })
+            }, options=config[CONF_OPTIONS])
