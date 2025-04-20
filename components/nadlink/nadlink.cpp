@@ -290,7 +290,7 @@ void NADLinkInputSelect::control(const std::string &value) const{
 }
 
 optional<size_t> NADLinkInputSelect::active_index() const {
-    return this->indexOf("Unknown");
+    return this->index_of("Unknown");
 }
 
 }  // namespace nadlink
