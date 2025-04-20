@@ -265,7 +265,7 @@ NADLinkInputSelect::NADLinkInputSelect(NADLink *parent) : parent_(parent) {
     this->publish_state("Unknown");
     }*/
 
-void NADLinkInputSelect::control(const std::string &value) const{
+void NADLinkInputSelect::control(const std::string &value) {
     if (value == "Unknown"){
         ESP_LOGI(TAG, "Dummy value \"Unknown\" provided. No action taken.");
     } else if (value == "Tape 1") {
