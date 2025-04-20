@@ -141,7 +141,7 @@ async def to_code(config):
             vol_up = cg.new_Pvariable(vol_up_id, var)
             cg.add(vol_up.set_name(DEFAULT_NAMES[CONF_VOLUME_UP]))
             cg.add(vol_up.set_icon(DEFAULT_ICONS[CONF_VOLUME_UP]))
-            await button.register_button(vol_up, {})
+            await button.register_button(vol_up, {CONF_ID: vol_up_id})
         
         # Volume Down button
         if CONF_VOLUME_DOWN in config:
@@ -154,7 +154,7 @@ async def to_code(config):
             vol_down = cg.new_Pvariable(vol_down_id, var)
             cg.add(vol_down.set_name(DEFAULT_NAMES[CONF_VOLUME_DOWN]))
             cg.add(vol_down.set_icon(DEFAULT_ICONS[CONF_VOLUME_DOWN]))
-            await button.register_button(vol_down, {})
+            await button.register_button(vol_down, {CONF_ID: vol_down_id})
     
     # Mute button
     if config[CONF_MUTE_BUTTON]:
@@ -168,7 +168,7 @@ async def to_code(config):
             mute = cg.new_Pvariable(mute_id, var)
             cg.add(mute.set_name(DEFAULT_NAMES[CONF_TOGGLE_MUTE]))
             cg.add(mute.set_icon(DEFAULT_ICONS[CONF_TOGGLE_MUTE]))
-            await button.register_button(mute, {})
+            await button.register_button(mute, {CONF_ID: mute_id})
     
     # Standby button
     if config[CONF_STANDBY_BUTTON]:
@@ -182,7 +182,7 @@ async def to_code(config):
             standby = cg.new_Pvariable(standby_id, var)
             cg.add(standby.set_name(DEFAULT_NAMES[CONF_TOGGLE_STANDBY]))
             cg.add(standby.set_icon(DEFAULT_ICONS[CONF_TOGGLE_STANDBY]))
-            await button.register_button(standby, {})
+            await button.register_button(standby, {CONF_ID: standby_id})
     
     # Power buttons
     if config[CONF_POWER_BUTTONS]:
@@ -197,7 +197,7 @@ async def to_code(config):
             power_on = cg.new_Pvariable(power_on_id, var)
             cg.add(power_on.set_name(DEFAULT_NAMES[CONF_POWER_ON]))
             cg.add(power_on.set_icon(DEFAULT_ICONS[CONF_POWER_ON]))
-            await button.register_button(power_on, {})
+            await button.register_button(power_on, {CONF_ID: power_on_id})
         
         # Power Off button
         if CONF_POWER_OFF in config:
@@ -210,7 +210,7 @@ async def to_code(config):
             power_off = cg.new_Pvariable(power_off_id, var)
             cg.add(power_off.set_name(DEFAULT_NAMES[CONF_POWER_OFF]))
             cg.add(power_off.set_icon(DEFAULT_ICONS[CONF_POWER_OFF]))
-            await button.register_button(power_off, {})
+            await button.register_button(power_off, {CONF_ID: power_off_id})
     
     # Input Select
     if config[CONF_INPUT_SELECT]:
@@ -224,4 +224,4 @@ async def to_code(config):
             input_select = cg.new_Pvariable(input_id, var)
             cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))
             cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
-            await select.register_select(input_select, {})
+            await select.register_select(input_select, {CONF_ID:  input_id})
