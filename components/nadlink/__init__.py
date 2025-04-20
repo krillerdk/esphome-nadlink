@@ -74,7 +74,7 @@ DEFAULT_NAMES = {
     CONF_INPUT: "NAD Input Source",
 }
 
-DEFAULT_INPUTS = { "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"}
+DEFAULT_INPUTS = ["Unknown", "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"]
 
 # Schema for the component
 CONFIG_SCHEMA = cv.Schema({
