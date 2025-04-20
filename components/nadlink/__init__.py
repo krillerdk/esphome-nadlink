@@ -251,7 +251,11 @@ async def to_code(config):
     if config[CONF_INPUT_SELECT]:
         if CONF_INPUT in config:
             input_select = cg.new_Pvariable(config[CONF_INPUT][CONF_ID], var)
-            await select.register_select(input_select, config[CONF_INPUT])
+            await select.register_select(
+                input_select,
+                config[CONF_INPUT],
+                options=config[CONF_INPUT][CONF_OPTIONS]
+            )
         else:
             input_id = config.get(CONF_INPUT_ID, None)
             if input_id is None:
@@ -260,10 +264,13 @@ async def to_code(config):
             cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))
             cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
             cg.add(input_select.set_options(DEFAULT_INPUTS))
-            await select.register_select(input_select, {
-                CONF_ID:  input_id,
-                CONF_NAME: DEFAULT_NAMES[CONF_INPUT],
-                CONF_ICON: DEFAULT_ICONS[CONF_INPUT],
-                CONF_OPTIONS: DEFAULT_INPUTS,
-                CONF_DISABLED_BY_DEFAULT: False
-            })
+            await select.register_select(
+                input_select,
+                {
+                    CONF_ID:  input_id,
+                    CONF_NAME: DEFAULT_NAMES[CONF_INPUT],
+                    CONF_ICON: DEFAULT_ICONS[CONF_INPUT],
+                    CONF_DISABLED_BY_DEFAULT: False
+                },
+                options=DEFAULT_INPUTS
+            )
