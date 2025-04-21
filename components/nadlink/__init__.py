@@ -45,7 +45,7 @@ CONF_POWER_OFF = "power_off"
 # Disable options
 CONF_VOLUME_BUTTONS = "volume_buttons"
 CONF_MUTE_BUTTON = "mute_button"
-wCONF_STANDBY_BUTTON = "standby_button" 
+CONF_STANDBY_BUTTON = "standby_button" 
 CONF_POWER_BUTTONS = "power_buttons"
 CONF_INPUT_SELECT = "input_select"
 
