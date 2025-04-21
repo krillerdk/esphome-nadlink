@@ -30,7 +30,7 @@ void NADLink::set_nadlink_pin(GPIOPin *pin) {
     ESP_LOGD(TAG, "NADLink pin set to %d", pin_);
 }
 
-void set_nad_address(uint8_t address_1, uint8_t address_2) {
+void NADLink::set_nad_address(uint8_t address_1, uint8_t address_2) {
     nad_address_1 = address_1;
     nad_address_2 = address_2;
 }
