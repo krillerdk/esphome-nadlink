@@ -1,0 +1,19 @@
+{
+  "name": "NADLink",
+  "owner": "krillerdk",
+  "type": "component",
+  "description": "ESPHome component for controlling NAD amplifiers via the NADLink protocol",
+  "website": "https://github.com/kriller.dk/esphome-nadlink",
+  "repository": "https://github.com/kriller.dk/esphome-nadlink.git",
+  "documentation": "https://github.com/kriller.dk/esphome-nadlink/blob/main/README.md",
+  "version": "0.5.0",
+  "components": [
+    {
+      "name": "nadlink",
+      "description": "Control NAD amplifiers via the NADLink IR protocol",
+      "platforms": ["esp8266", "esp32"],
+      "dependencies": [ "button,select" ]
+    }
+  ]
+}
+
