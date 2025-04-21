@@ -78,7 +78,7 @@ protected:
     // Default volume level (in steps) when turning on
     int default_volume_level = 6; 
     // Max volume (in steps) to assume when turning to zero.
-    int max_volume = 20 
+    int max_volume = 20;
         
     // NADLink protocol methods
     void pulse(int microseconds);
