@@ -20,7 +20,7 @@ public:
     void set_default_volume(int volume);
     void set_max_assumed_volume(int volume);
 
-    void set_nad_address(uint_t address1, uint_t address2);
+    void set_nad_address(uint8_t address1, uint8_t address2);
     
     // Input selection methods
     void switch_to_tape_1();

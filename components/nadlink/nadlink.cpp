@@ -17,8 +17,8 @@ void NADLink::setup() {
 void NADLink::dump_config() {
     ESP_LOGCONFIG(TAG, "nadlink:");
     LOG_PIN(" Output pin: ",this->pin_);
-    ESP_LOGCONFIG(TAG,  "NAD address 1: %02hhX", nad_c_740_address_1);
-    ESP_LOGCONFIG(TAG,  "NAD address 2: %02hhX", nad_c_740_address_2);
+    ESP_LOGCONFIG(TAG, " NAD address 1: %02hhX", nad_address_1);
+    ESP_LOGCONFIG(TAG, " NAD address 2: %02hhX", nad_address_2);
 }
     
 float NADLink::get_setup_priority() const {
@@ -30,17 +30,19 @@ void NADLink::set_nadlink_pin(GPIOPin *pin) {
     ESP_LOGD(TAG, "NADLink pin set to %d", pin_);
 }
 
-
+void set_nad_address(uint8_t address_1, uint8_t address_2) {
+    nad_address_1 = address_1;
+    nad_address_2 = address_2;
+}
 
 // Override default start volume
-void NADLink::set_default_volume(float volume) {
+void NADLink::set_default_volume(int volume) {
     default_volume_level = volume;
 }
+// How much can we assume the dial is turned up when playing ?
 void NADLink::set_max_assumed_volume(int volume) {
     max_volume = volume;
 }
-
-
 
 // Public methods for input selection
 void NADLink::switch_to_tape_1() {
@@ -179,8 +181,8 @@ void NADLink::send_command(uint8_t command, bool pause_before_and_after_command)
 
     ESP_LOGV(TAG, "Sending NAD address");
     // Send address part 1 and 2
-    send_byte(nad_c_740_address_1);
-    send_byte(nad_c_740_address_2);
+    send_byte(nad_address_1);
+    send_byte(nad_address_2);
 
     // Send command and inverted command
     send_byte_and_inverse(command);
@@ -198,7 +200,7 @@ void NADLink::send_command(uint8_t command, bool pause_before_and_after_command)
 void NADLink::change_volume_to_default() {
     // Returns the volume control to default level (assuming it's already at zero)
     send_command(increase_volume, false);
-    for (int i = 0; i < (113 * default_volume_level / 11); ++i) {
+    for (int i = 0; i < default_volume_level; ++i) {
         send_repeat();
     }
 }
@@ -206,7 +208,7 @@ void NADLink::change_volume_to_default() {
 void NADLink::change_volume_to_zero() {
     // Sets the volume to zero
     send_command(decrease_volume, false);
-    for (int i = 0; i < (113 * default_volume_level / 11 + 5); ++i) {
+    for (int i = 0; i < max_volume; ++i) {
         send_repeat();
     }
 }
