@@ -16,7 +16,12 @@ public:
     float get_setup_priority() const override;
   
     void set_nadlink_pin(GPIOPin *pin);
-  
+
+    void set_default_volume(int volume);
+    void set_max_assumed_volume(int volume);
+
+    void set_nad_address(uint_t address1, uint_t address2);
+    
     // Input selection methods
     void switch_to_tape_1();
     void switch_to_tape_2();
@@ -46,11 +51,9 @@ protected:
 
     GPIOPin *pin_{nullptr};
 
-    bool power_is_on_{false};
-    
     // NAD C 740 address
-    static constexpr uint8_t nad_c_740_address_1   = 0x87;  // B10000111
-    static constexpr uint8_t nad_c_740_address_2   = 0x7C;  // B01111100
+    uint8_t nad_address_1   = 0x87;  // B10000111
+    uint8_t nad_address_2   = 0x7C;  // B01111100
 
     // NAD C740 commands
     static constexpr uint8_t power_on               = 0x25;
@@ -72,10 +75,11 @@ protected:
     static constexpr uint8_t decrease_volume        = 0x8C;
     static constexpr uint8_t toggle_mute_cmd        = 0x94;
 
-    // Default volume level
-    static constexpr float default_volume_level = 1.1;
-
-    
+    // Default volume level (in steps) when turning on
+    int default_volume_level = 6; 
+    // Max volume (in steps) to assume when turning to zero.
+    int max_volume = 20 
+        
     // NADLink protocol methods
     void pulse(int microseconds);
     void flat(int microseconds);
@@ -144,8 +148,6 @@ protected:
 class NADLinkInputSelect : public select::Select {
 public:
     explicit NADLinkInputSelect(NADLink *parent);
-    //void setup() override;
-    //optional<size_t> active_index() const override;
 protected:
     NADLink *parent_;
     void control(const std::string &value) override;

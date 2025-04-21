@@ -30,6 +30,11 @@ NADLinkPowerOffButton = nadlink_ns.class_("NADLinkPowerOffButton", button.Button
 NADLinkInputSelect = nadlink_ns.class_("NADLinkInputSelect", select.Select)
 
 # Configuration constants
+CONF_ADDRESS1 = "address1"
+CONF_ADDRESS2 = "address2"
+CONF_MAX_VOLUME = "max_assumed_volume"
+CONF_DEFAULT_VOLUME = "default_volume"
+
 CONF_VOLUME_UP = "volume_up"
 CONF_VOLUME_DOWN = "volume_down"
 CONF_TOGGLE_MUTE = "toggle_mute"
@@ -40,7 +45,7 @@ CONF_POWER_OFF = "power_off"
 # Disable options
 CONF_VOLUME_BUTTONS = "volume_buttons"
 CONF_MUTE_BUTTON = "mute_button"
-CONF_STANDBY_BUTTON = "standby_button" 
+wCONF_STANDBY_BUTTON = "standby_button" 
 CONF_POWER_BUTTONS = "power_buttons"
 CONF_INPUT_SELECT = "input_select"
 
@@ -76,11 +81,17 @@ DEFAULT_NAMES = {
 
 DEFAULT_INPUTS = ["Unknown", "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"]
 
+DEFAULT_NAD_ADDREESS = [ 0x87, 0x7C ]
+
 # Schema for the component
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(NADLink),
     cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
-    
+    cv.Optional(CONF_ADDRESS1): cv.hex_int,
+    cv.Optional(CONF_ADDRESS2): cv.hex_int,
+    cv.Optional(CONF_MAX_VOLUME): cv.int_,
+    cv.Optional(CONF_DEFAULT_VOLUME): cv.int_,
+
     # Component enable/disable flags (all enabled by default)
     cv.Optional(CONF_VOLUME_BUTTONS, default=True): cv.boolean,
     cv.Optional(CONF_MUTE_BUTTON, default=True): cv.boolean,
@@ -132,7 +143,17 @@ async def to_code(config):
     # Configure the NADLink pin
     pin = await cg.gpio_pin_expression(config[CONF_PIN])
     cg.add(var.set_nadlink_pin(pin))
-    
+
+    # Set the NAD protocol address if specified
+    if CONF_ADDRESS1 and CONF_ADDRESS2 in config:
+        await cg.set_nad_address(CONF_ADDRESS1, CONF_ADDRESS2)
+
+    # Volume level defaults
+    if CONF_MAX_VOLUME in config:
+        await cg.set_max_assumed_volume(CONF_MAX_VOLUME)
+    if CONF_DEFAULT_VOLUME in config:
+        await cg.set_default_volume(CONF_DEFAULT_VOLUME)
+        
     # Volume buttons
     if config[CONF_VOLUME_BUTTONS]:
         # Volume Up button

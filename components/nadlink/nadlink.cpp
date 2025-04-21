@@ -30,6 +30,18 @@ void NADLink::set_nadlink_pin(GPIOPin *pin) {
     ESP_LOGD(TAG, "NADLink pin set to %d", pin_);
 }
 
+
+
+// Override default start volume
+void NADLink::set_default_volume(float volume) {
+    default_volume_level = volume;
+}
+void NADLink::set_max_assumed_volume(int volume) {
+    max_volume = volume;
+}
+
+
+
 // Public methods for input selection
 void NADLink::switch_to_tape_1() {
     ESP_LOGD(TAG, "Switching to Tape 1");
@@ -184,7 +196,7 @@ void NADLink::send_command(uint8_t command, bool pause_before_and_after_command)
 }
 
 void NADLink::change_volume_to_default() {
-    // Returns the volume control to default level
+    // Returns the volume control to default level (assuming it's already at zero)
     send_command(increase_volume, false);
     for (int i = 0; i < (113 * default_volume_level / 11); ++i) {
         send_repeat();
@@ -258,12 +270,9 @@ void NADLinkPowerOffButton::press_action() {
 }
 
 NADLinkInputSelect::NADLinkInputSelect(NADLink *parent) : parent_(parent) {
+    // SelectTraits contains the actual option list.
     traits.set_options({"Unknown", "Tape 1", "Tape 2", "Tuner", "Aux", "Video", "CD", "Disc"});
 }
-
-/*void NADLinkInputSelect::setup() {
-    this->publish_state("Unknown");
-    }*/
 
 void NADLinkInputSelect::control(const std::string &value) {
     if (value == "Unknown"){
