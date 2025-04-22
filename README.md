@@ -1,4 +1,4 @@
-# esphome-nadlink
+# esphome-nadlink #
 An ESPHome external component that allows controlling NAD devices that have NAD Link ports. 
 The idea is to be able to control NAD devices using home-assistant.
 
@@ -30,7 +30,7 @@ external_components:
 
 nadlink:
   id: nad_c740
-  pin: GPIO16 (
+  pin: GPIO16
 ```
 
 By default it will populate buttons for toggling standby state, power on, power off, mute toggle, volume up, volume down, and an input select box that allows you to switch inputs between Tape1, Tape2, Tuner, Aux, Video, CD, and Disc. The values in the select drop-down are currently hardcoded to match the C740. I hope to be able to make the input list and corresponding actions configurable in the future. 
@@ -48,7 +48,21 @@ nadlink:
  input_select: false: Skips creation of the input select drop down.
 ```
 
-If you want to be able to send custom remote commands that the module does not expose (yet), you can either build the buttons yourself using template buttons and lambdas, or you can expose the send_command function as a home-assistant service like this:
+### Specifying NAD address ###
+
+By default the component uses 0x87 and 0x7C as address_1 and address_2 of of the NAD Link protocol. This corresponds with what the C740 receiver expects. If you need to change them, you can specify them in the config file as nadlink.address1 and nadlink.address2:
+
+```yaml
+nadlink:
+  id: <device_id>
+  pin: GPIO16
+  address1: "0x87"
+  address2: "0x7C"
+```
+
+### Custom command values ###
+
+If you want to be able to send custom remote commands that are currently exposed through the component, you can either build the buttons yourself using template buttons and lambdas, or you can expose the send_command function as a home-assistant service like this:
 ```yaml
 api:
   actions:
@@ -102,7 +116,7 @@ switch:
 ```    
 I could of course have added a power-monitoring relay to the ESP device as well, and have everything done on the ESP, but I didn't want to have the ESP be in charge of the mains power to the recevier while tinkering, and the Shelly works well enough for my purpose. 
 
-# Random thoughts #
+## Random thoughts ##
 
 The following is of random things that i wanted to mention but did manage to fit in above.
 
