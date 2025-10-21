@@ -202,6 +202,7 @@ void NADLink::change_volume_to_default() {
     send_command(increase_volume, false);
     for (int i = 0; i < default_volume_level; ++i) {
         send_repeat();
+        yield();
     }
 }
 
@@ -223,7 +224,7 @@ void NADLink::turn_on() {
     // Power up
     send_command(power_on);
     // Wait 4s for the amp to power up and turn on the inputs
-    delay(4000);
+    esphome::delay_microseconds_safe(4000);
     // Volume to default
     change_volume_to_default();
 }
