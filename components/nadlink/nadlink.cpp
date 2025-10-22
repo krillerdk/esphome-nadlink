@@ -202,7 +202,6 @@ void NADLink::change_volume_to_default() {
     send_command(increase_volume, false);
     for (int i = 0; i < default_volume_level; ++i) {
         send_repeat();
-        yield();
     }
 }
 
