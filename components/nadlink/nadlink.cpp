@@ -105,15 +105,15 @@ void NADLink::toggle_standby() {
 
 // NADLink protocol implementation
 void NADLink::pulse(int microseconds) {
-  // 0V (Logicalfalse)
-  pin_->digital_write(false);
-  delayMicroseconds(microseconds);
+    // 0V (Logicalfalse)
+    pin_->digital_write(false);
+    esphome::delay_microseconds_safe(microseconds);
 }
 
 void NADLink::flat(int microseconds) {
     // +5.0V (+3.3V) (Logicaltrue)
     pin_->digital_write(true);
-    delayMicroseconds(microseconds);
+    esphome::delay_microseconds_safe(microseconds);
 }
 
 // Preamble
@@ -223,7 +223,7 @@ void NADLink::turn_on() {
     // Power up
     send_command(power_on);
     // Wait 4s for the amp to power up and turn on the inputs
-    delay(4000);
+    esphome::delay_microseconds_safe(4000);
     // Volume to default
     change_volume_to_default();
 }
