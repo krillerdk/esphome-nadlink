@@ -152,7 +152,7 @@ async def to_code(config):
     if CONF_MAX_VOLUME in config:
         await cg.add(var.set_max_assumed_volume(CONF_MAX_VOLUME))
     if CONF_DEFAULT_VOLUME in config:
-        await cg.add(set_default_volume(CONF_DEFAULT_VOLUME))
+        await cg.add(var.set_default_volume(CONF_DEFAULT_VOLUME))
         
     # Volume buttons
     if config[CONF_VOLUME_BUTTONS]:
