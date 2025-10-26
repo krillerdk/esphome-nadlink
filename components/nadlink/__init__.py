@@ -89,8 +89,8 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
     cv.Optional(CONF_ADDRESS1): cv.hex_int,
     cv.Optional(CONF_ADDRESS2): cv.hex_int,
-    cv.Optional(CONF_MAX_VOLUME): cv.int_,
-    cv.Optional(CONF_DEFAULT_VOLUME): cv.int_,
+    cv.Optional(CONF_MAX_VOLUME): cv.positive_not_null_int,
+    cv.Optional(CONF_DEFAULT_VOLUME): cv.positive_not_null_int,
 
     # Component enable/disable flags (all enabled by default)
     cv.Optional(CONF_VOLUME_BUTTONS, default=True): cv.boolean,
