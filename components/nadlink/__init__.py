@@ -146,13 +146,15 @@ async def to_code(config):
 
     # Set the NAD protocol address if specified
     if CONF_ADDRESS1 and CONF_ADDRESS2 in config:
-        cg.add(var.set_nad_address(CONF_ADDRESS1, CONF_ADDRESS2))
+        conf_addr1 = config.get(CONF_ADDRESS1)
+        conf_addr2 = config.get(CONF_ADDRESS2)
+        cg.add(var.set_nad_address(conf_addr1, conf_addr2))
 
     # Volume level defaults
     if CONF_MAX_VOLUME in config:
-        cg.add(var.set_max_assumed_volume(CONF_MAX_VOLUME))
+        cg.add(var.set_max_assumed_volume(config.get(CONF_MAX_VOLUME)))
     if CONF_DEFAULT_VOLUME in config:
-        cg.add(var.set_default_volume(CONF_DEFAULT_VOLUME))
+        cg.add(var.set_default_volume(config.get(CONF_DEFAULT_VOLUME)))
         
     # Volume buttons
     if config[CONF_VOLUME_BUTTONS]:
