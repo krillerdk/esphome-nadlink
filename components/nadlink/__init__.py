@@ -109,29 +109,15 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_INPUT_ID): cv.declare_id(NADLinkInputSelect),
     
     # Optional button customization schemas
-    cv.Optional(CONF_VOLUME_UP): button.BUTTON_SCHEMA.extend({
-        cv.GenerateID(): cv.declare_id(NADLinkVolumeUpButton),
-    }),
-    cv.Optional(CONF_VOLUME_DOWN): button.BUTTON_SCHEMA.extend({
-        cv.GenerateID(): cv.declare_id(NADLinkVolumeDownButton),
-    }),
-    cv.Optional(CONF_TOGGLE_MUTE): button.BUTTON_SCHEMA.extend({
-        cv.GenerateID(): cv.declare_id(NADLinkMuteToggleButton),
-    }),
-    cv.Optional(CONF_TOGGLE_STANDBY): button.BUTTON_SCHEMA.extend({
-        cv.GenerateID(): cv.declare_id(NADLinkStandbyToggleButton),
-    }),
-    cv.Optional(CONF_POWER_ON): button.BUTTON_SCHEMA.extend({
-        cv.GenerateID(): cv.declare_id(NADLinkPowerOnButton),
-    }),
-    cv.Optional(CONF_POWER_OFF): button.BUTTON_SCHEMA.extend({
-        cv.GenerateID(): cv.declare_id(NADLinkPowerOffButton),
-    }),
+    cv.Optional(CONF_VOLUME_UP): button.button_schema(NADLinkVolumeUpButton),
+    cv.Optional(CONF_VOLUME_DOWN): button.button_schema(NADLinkVolumeDownButton),
+    cv.Optional(CONF_TOGGLE_MUTE): button.button_schema(NADLinkMuteToggleButton),
+    cv.Optional(CONF_TOGGLE_STANDBY): button.button_schema(NADLinkStandbyToggleButton),
+    cv.Optional(CONF_POWER_ON): button.button_schema(NADLinkPowerOnButton),
+    cv.Optional(CONF_POWER_OFF): button.button_schema(NADLinkPowerOffButton),
     
     # Optional input select customization schema
-    cv.Optional(CONF_INPUT): select.SELECT_SCHEMA.extend({
-        cv.GenerateID(): cv.declare_id(NADLinkInputSelect),
-    }),
+    cv.Optional(CONF_INPUT): select.select_schema(NADLinkInputSelect),
 }).extend(cv.COMPONENT_SCHEMA)
 
 
