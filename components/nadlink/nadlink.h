@@ -12,16 +12,16 @@ public:
     NADLink();
     void setup() override;
     void dump_config() override;
-    
+
     float get_setup_priority() const override;
-  
+
     void set_nadlink_pin(GPIOPin *pin);
 
     void set_default_volume(int volume);
     void set_max_assumed_volume(int volume);
 
     void set_nad_address(uint8_t address1, uint8_t address2);
-    
+
     // Input selection methods
     void switch_to_tape_1();
     void switch_to_tape_2();
@@ -30,14 +30,14 @@ public:
     void switch_to_video();
     void switch_to_cd();
     void switch_to_disc();
-  
+
     // Volume control methods
     void volume_up();
     void volume_down();
-  
+
     // Mute toggle method
     void toggle_mute();
-  
+
     // Power control method
     void toggle_standby();
 
@@ -46,7 +46,7 @@ public:
 
     void turn_on();
     void turn_off();
-    
+
 protected:
 
     GPIOPin *pin_{nullptr};
@@ -79,7 +79,7 @@ protected:
     int default_volume_level = 6; 
     // Max volume (in steps) to assume when turning to zero.
     int max_volume = 20;
-        
+
     // NADLink protocol methods
     void pulse(int microseconds);
     void flat(int microseconds);
@@ -111,11 +111,10 @@ protected:
     void press_action() override;
     NADLink *parent_;
 };
-
 class NADLinkMuteToggleButton : public button::Button {
 public:
     explicit NADLinkMuteToggleButton(NADLink *parent);
-    
+
 protected:
     void press_action() override;
     NADLink *parent_;

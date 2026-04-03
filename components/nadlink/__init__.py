@@ -45,7 +45,7 @@ CONF_POWER_OFF = "power_off"
 # Disable options
 CONF_VOLUME_BUTTONS = "volume_buttons"
 CONF_MUTE_BUTTON = "mute_button"
-CONF_STANDBY_BUTTON = "standby_button" 
+CONF_STANDBY_BUTTON = "standby_button"
 CONF_POWER_BUTTONS = "power_buttons"
 CONF_INPUT_SELECT = "input_select"
 
@@ -98,7 +98,7 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_STANDBY_BUTTON, default=True): cv.boolean,
     cv.Optional(CONF_POWER_BUTTONS, default=True): cv.boolean,
     cv.Optional(CONF_INPUT_SELECT, default=True): cv.boolean,
-    
+
     # Auto-generated button IDs (can be referenced in YAML)
     cv.Optional(CONF_VOLUME_UP_ID): cv.declare_id(NADLinkVolumeUpButton),
     cv.Optional(CONF_VOLUME_DOWN_ID): cv.declare_id(NADLinkVolumeDownButton),
@@ -107,17 +107,31 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_POWER_ON_ID): cv.declare_id(NADLinkPowerOnButton),
     cv.Optional(CONF_POWER_OFF_ID): cv.declare_id(NADLinkPowerOffButton),
     cv.Optional(CONF_INPUT_ID): cv.declare_id(NADLinkInputSelect),
-    
+
     # Optional button customization schemas
-    cv.Optional(CONF_VOLUME_UP): button.button_schema(NADLinkVolumeUpButton),
-    cv.Optional(CONF_VOLUME_DOWN): button.button_schema(NADLinkVolumeDownButton),
-    cv.Optional(CONF_TOGGLE_MUTE): button.button_schema(NADLinkMuteToggleButton),
-    cv.Optional(CONF_TOGGLE_STANDBY): button.button_schema(NADLinkStandbyToggleButton),
-    cv.Optional(CONF_POWER_ON): button.button_schema(NADLinkPowerOnButton),
-    cv.Optional(CONF_POWER_OFF): button.button_schema(NADLinkPowerOffButton),
-    
+    cv.Optional(CONF_VOLUME_UP): button.button_schema(NADLinkVolumeUpButton,
+                                                      icon=DEFAULT_ICONS[CONF_VOLUME_UP],
+                                                      name=DEFAULT_NAMES[CONF_VOLUME_UP]),
+    cv.Optional(CONF_VOLUME_DOWN): button.button_schema(NADLinkVolumeDownButton,
+                                                        icon=DEFAULT_ICONS[CONF_VOLUME_DOWN],
+                                                        name=DEFAULT_ICONS[CONF_VOLUME_DOWN]),
+    cv.Optional(CONF_TOGGLE_MUTE): button.button_schema(NADLinkMuteToggleButton,
+                                                        icon=DEFAULT_ICONS[CONF_TOGGLE_MUTE],
+                                                        name=DEFAULT_NAMES[CONF_TOGGLE_MUTE]),
+    cv.Optional(CONF_TOGGLE_STANDBY): button.button_schema(NADLinkStandbyToggleButton,
+                                                           icon=DEFAULT_ICONS[CONF_TOGGLE_STANDBY],
+                                                           name=DEFAULT_NAMES[CONF_TOGGLE_STANDBY]),
+    cv.Optional(CONF_POWER_ON): button.button_schema(NADLinkPowerOnButton,
+                                                     icon=DEFAULT_ICONS[CONF_POWER_ON],
+                                                     name=DEFAULT_NAMES[CONF_POWER_ON]),
+    cv.Optional(CONF_POWER_OFF): button.button_schema(NADLinkPowerOffButton,
+                                                      icon=DEFAULT_ICONS[CONF_POWER_OFF],
+                                                      name=DEFAULT_NAMES[CONF_POWER_OFF]),
+
     # Optional input select customization schema
-    cv.Optional(CONF_INPUT): select.select_schema(NADLinkInputSelect),
+    cv.Optional(CONF_INPUT): select.select_schema(NADLinkInputSelect,
+                                                  icon=DEFAULT_ICONS[CONF_INPUT],
+                                                  name=DEFAULT_NAMES[CONF_INPUT]),
 }).extend(cv.COMPONENT_SCHEMA)
 
 
@@ -125,7 +139,7 @@ async def to_code(config):
     # Create the main component
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
-    
+
     # Configure the NADLink pin
     pin = await cg.gpio_pin_expression(config[CONF_PIN])
     cg.add(var.set_nadlink_pin(pin))
@@ -141,7 +155,7 @@ async def to_code(config):
         cg.add(var.set_max_assumed_volume(config.get(CONF_MAX_VOLUME)))
     if CONF_DEFAULT_VOLUME in config:
         cg.add(var.set_default_volume(config.get(CONF_DEFAULT_VOLUME)))
-        
+
     # Volume buttons
     if config[CONF_VOLUME_BUTTONS]:
         # Volume Up button
@@ -154,15 +168,15 @@ async def to_code(config):
             if vol_up_id is None:
                 vol_up_id = cv.declare_id(NADLinkVolumeUpButton)(f"{config[CONF_ID].id}_volume_up")
             vol_up = cg.new_Pvariable(vol_up_id, var)
-            cg.add(vol_up.set_name(DEFAULT_NAMES[CONF_VOLUME_UP]))
-            cg.add(vol_up.set_icon(DEFAULT_ICONS[CONF_VOLUME_UP]))
+            #cg.add(vol_up.set_name(DEFAULT_NAMES[CONF_VOLUME_UP]))
+            #cg.add(vol_up.set_icon(DEFAULT_ICONS[CONF_VOLUME_UP]))
             await button.register_button(vol_up, {
                 CONF_ID: vol_up_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_VOLUME_UP],
                 CONF_ICON: DEFAULT_ICONS[CONF_VOLUME_UP],
                 CONF_DISABLED_BY_DEFAULT: False
             })
-        
+
         # Volume Down button
         if CONF_VOLUME_DOWN in config:
             vol_down = cg.new_Pvariable(config[CONF_VOLUME_DOWN][CONF_ID], var)
@@ -172,15 +186,15 @@ async def to_code(config):
             if vol_down_id is None:
                 vol_down_id = cv.declare_id(NADLinkVolumeDownButton)(f"{config[CONF_ID].id}_volume_down")
             vol_down = cg.new_Pvariable(vol_down_id, var)
-            cg.add(vol_down.set_name(DEFAULT_NAMES[CONF_VOLUME_DOWN]))
-            cg.add(vol_down.set_icon(DEFAULT_ICONS[CONF_VOLUME_DOWN]))
+            #cg.add(vol_down.set_name(DEFAULT_NAMES[CONF_VOLUME_DOWN]))
+            #cg.add(vol_down.set_icon(DEFAULT_ICONS[CONF_VOLUME_DOWN]))
             await button.register_button(vol_down, {
                 CONF_ID: vol_down_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_VOLUME_DOWN],
                 CONF_ICON: DEFAULT_ICONS[CONF_VOLUME_DOWN],
                 CONF_DISABLED_BY_DEFAULT: False
             })
-    
+
     # Mute button
     if config[CONF_MUTE_BUTTON]:
         if CONF_TOGGLE_MUTE in config:
@@ -191,14 +205,14 @@ async def to_code(config):
             if mute_id is None:
                 mute_id = cv.declare_id(NADLinkMuteToggleButton)(f"{config[CONF_ID].id}_mute_toggle")
             mute = cg.new_Pvariable(mute_id, var)
-            cg.add(mute.set_name(DEFAULT_NAMES[CONF_TOGGLE_MUTE]))
-            cg.add(mute.set_icon(DEFAULT_ICONS[CONF_TOGGLE_MUTE]))
+            #cg.add(mute.set_name(DEFAULT_NAMES[CONF_TOGGLE_MUTE]))
+            #cg.add(mute.set_icon(DEFAULT_ICONS[CONF_TOGGLE_MUTE]))
             await button.register_button(mute, {
                 CONF_ID: mute_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_TOGGLE_MUTE],
                 CONF_DISABLED_BY_DEFAULT: False
             })
-    
+
     # Standby button
     if config[CONF_STANDBY_BUTTON]:
         if CONF_TOGGLE_STANDBY in config:
@@ -209,8 +223,8 @@ async def to_code(config):
             if standby_id is None:
                 standby_id = cv.declare_id(NADLinkStandbyToggleButton)(f"{config[CONF_ID].id}_standby_toggle")
             standby = cg.new_Pvariable(standby_id, var)
-            cg.add(standby.set_name(DEFAULT_NAMES[CONF_TOGGLE_STANDBY]))
-            cg.add(standby.set_icon(DEFAULT_ICONS[CONF_TOGGLE_STANDBY]))
+            #cg.add(standby.set_name(DEFAULT_NAMES[CONF_TOGGLE_STANDBY]))
+            #cg.add(standby.set_icon(DEFAULT_ICONS[CONF_TOGGLE_STANDBY]))
             await button.register_button(standby, {
                 CONF_ID: standby_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_TOGGLE_STANDBY],
@@ -229,8 +243,8 @@ async def to_code(config):
             if power_on_id is None:
                 power_on_id = cv.declare_id(NADLinkPowerOnButton)(f"{config[CONF_ID].id}_power_on")
             power_on = cg.new_Pvariable(power_on_id, var)
-            cg.add(power_on.set_name(DEFAULT_NAMES[CONF_POWER_ON]))
-            cg.add(power_on.set_icon(DEFAULT_ICONS[CONF_POWER_ON]))
+            #cg.add(power_on.set_name(DEFAULT_NAMES[CONF_POWER_ON]))
+            #cg.add(power_on.set_icon(DEFAULT_ICONS[CONF_POWER_ON]))
             await button.register_button(power_on, {
                 CONF_ID: power_on_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_POWER_ON],
@@ -247,8 +261,8 @@ async def to_code(config):
             if power_off_id is None:
                 power_off_id = cv.declare_id(NADLinkPowerOffButton)(f"{config[CONF_ID].id}_power_off")
             power_off = cg.new_Pvariable(power_off_id, var)
-            cg.add(power_off.set_name(DEFAULT_NAMES[CONF_POWER_OFF]))
-            cg.add(power_off.set_icon(DEFAULT_ICONS[CONF_POWER_OFF]))
+            #cg.add(power_off.set_name(DEFAULT_NAMES[CONF_POWER_OFF]))
+            #cg.add(power_off.set_icon(DEFAULT_ICONS[CONF_POWER_OFF]))
             await button.register_button(power_off, {
                 CONF_ID: power_off_id,
                 CONF_NAME: DEFAULT_NAMES[CONF_POWER_OFF],
@@ -270,8 +284,8 @@ async def to_code(config):
             if input_id is None:
                 input_id = cv.declare_id(NADLinkInputSelect)(f"{config[CONF_ID].id}_input")
             input_select = cg.new_Pvariable(input_id, var)
-            cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))
-            cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
+            #cg.add(input_select.set_name(DEFAULT_NAMES[CONF_INPUT]))
+            #cg.add(input_select.set_icon(DEFAULT_ICONS[CONF_INPUT]))
             cg.add(input_select.traits.set_options(DEFAULT_INPUTS))
             await select.register_select(
                 input_select,
