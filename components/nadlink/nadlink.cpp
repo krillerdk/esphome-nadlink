@@ -169,7 +169,7 @@ void NADLink::send_byte_and_inverse(uint8_t data_byte) {
 void NADLink::send_command(uint8_t command, bool pause_before_and_after_command) {
     ESP_LOGV(TAG, "Sending commmand with byte value %02hhX", command);
     int pause_length_in_ms = 250;
-    
+ 
     // Pause before command
     if (pause_before_and_after_command) {
         ESP_LOGV(TAG, "Pausing before commmand");
