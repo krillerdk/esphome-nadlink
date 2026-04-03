@@ -109,29 +109,16 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_INPUT_ID): cv.declare_id(NADLinkInputSelect),
 
     # Optional button customization schemas
-    cv.Optional(CONF_VOLUME_UP): button.button_schema(NADLinkVolumeUpButton,
-                                                      icon=DEFAULT_ICONS[CONF_VOLUME_UP],
-                                                      name=DEFAULT_NAMES[CONF_VOLUME_UP]),
-    cv.Optional(CONF_VOLUME_DOWN): button.button_schema(NADLinkVolumeDownButton,
-                                                        icon=DEFAULT_ICONS[CONF_VOLUME_DOWN],
-                                                        name=DEFAULT_ICONS[CONF_VOLUME_DOWN]),
-    cv.Optional(CONF_TOGGLE_MUTE): button.button_schema(NADLinkMuteToggleButton,
-                                                        icon=DEFAULT_ICONS[CONF_TOGGLE_MUTE],
-                                                        name=DEFAULT_NAMES[CONF_TOGGLE_MUTE]),
-    cv.Optional(CONF_TOGGLE_STANDBY): button.button_schema(NADLinkStandbyToggleButton,
-                                                           icon=DEFAULT_ICONS[CONF_TOGGLE_STANDBY],
-                                                           name=DEFAULT_NAMES[CONF_TOGGLE_STANDBY]),
-    cv.Optional(CONF_POWER_ON): button.button_schema(NADLinkPowerOnButton,
-                                                     icon=DEFAULT_ICONS[CONF_POWER_ON],
-                                                     name=DEFAULT_NAMES[CONF_POWER_ON]),
-    cv.Optional(CONF_POWER_OFF): button.button_schema(NADLinkPowerOffButton,
-                                                      icon=DEFAULT_ICONS[CONF_POWER_OFF],
-                                                      name=DEFAULT_NAMES[CONF_POWER_OFF]),
+    cv.Optional(CONF_VOLUME_UP): button.button_schema(NADLinkVolumeUpButton),
+    cv.Optional(CONF_VOLUME_DOWN): button.button_schema(NADLinkVolumeDownButton),
+    cv.Optional(CONF_TOGGLE_MUTE): button.button_schema(NADLinkMuteToggleButton),
+    cv.Optional(CONF_TOGGLE_STANDBY): button.button_schema(NADLinkStandbyToggleButton),
+
+    cv.Optional(CONF_POWER_ON): button.button_schema(NADLinkPowerOnButton),
+    cv.Optional(CONF_POWER_OFF): button.button_schema(NADLinkPowerOffButton),
 
     # Optional input select customization schema
-    cv.Optional(CONF_INPUT): select.select_schema(NADLinkInputSelect,
-                                                  icon=DEFAULT_ICONS[CONF_INPUT],
-                                                  name=DEFAULT_NAMES[CONF_INPUT]),
+    cv.Optional(CONF_INPUT): select.select_schema(NADLinkInputSelect),
 }).extend(cv.COMPONENT_SCHEMA)
 
 
