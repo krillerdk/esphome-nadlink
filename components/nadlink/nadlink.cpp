@@ -5,7 +5,7 @@ namespace esphome {
 namespace nadlink {
 
 static const char *const TAG = "nadlink";
-    
+
 NADLink::NADLink() {}
 
 void NADLink::setup() {
@@ -20,11 +20,11 @@ void NADLink::dump_config() {
     ESP_LOGCONFIG(TAG, " NAD address 1: %02hhX", nad_address_1);
     ESP_LOGCONFIG(TAG, " NAD address 2: %02hhX", nad_address_2);
 }
-    
+
 float NADLink::get_setup_priority() const {
     return setup_priority::HARDWARE;
 }
-    
+
 void NADLink::set_nadlink_pin(GPIOPin *pin) {
     pin_ = pin;
     ESP_LOGD(TAG, "NADLink pin set to %d", pin_);
@@ -54,17 +54,17 @@ void NADLink::switch_to_tape_2() {
     ESP_LOGD(TAG, "Switching to Tape 2");
     send_command(switch_input_to_tape_2);
 }
-    
+
 void NADLink::switch_to_tuner() {
     ESP_LOGD(TAG, "Switching to Tuner");
     send_command(switch_input_to_tuner);
 }
-    
+
 void NADLink::switch_to_aux() {
     ESP_LOGD(TAG, "Switching to AUX");
     send_command(switch_input_to_aux);
 }
-    
+
 void NADLink::switch_to_video() {
     ESP_LOGD(TAG, "Switching to Video");
     send_command(switch_input_to_video);
@@ -74,7 +74,7 @@ void NADLink::switch_to_cd() {
     ESP_LOGD(TAG, "Switching to CD");
     send_command(switch_input_to_cd);
 }
-    
+
 void NADLink::switch_to_disc() {
     ESP_LOGD(TAG, "Switching to Disc");
     send_command(switch_input_to_disc);
@@ -90,13 +90,13 @@ void NADLink::volume_down() {
     ESP_LOGD(TAG, "Volume Down");
     send_command(decrease_volume, false);
 }
-  
+
 // Toggle mute function
 void NADLink::toggle_mute() {
     ESP_LOGD(TAG, "Toggling Mute");
     send_command(toggle_mute_cmd);
 }
-  
+
 // Power control functions
 void NADLink::toggle_standby() {
     ESP_LOGD(TAG, "Toggling standby state");
@@ -169,7 +169,7 @@ void NADLink::send_byte_and_inverse(uint8_t data_byte) {
 void NADLink::send_command(uint8_t command, bool pause_before_and_after_command) {
     ESP_LOGV(TAG, "Sending commmand with byte value %02hhX", command);
     int pause_length_in_ms = 250;
-    
+ 
     // Pause before command
     if (pause_before_and_after_command) {
         ESP_LOGV(TAG, "Pausing before commmand");
