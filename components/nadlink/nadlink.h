@@ -17,6 +17,8 @@ public:
 
     void set_nadlink_pin(GPIOPin *pin);
 
+    void normalize_power_on_volume(bool change_volume_on_power_switch)
+
     void set_default_volume(int volume);
     void set_max_assumed_volume(int volume);
 
@@ -41,7 +43,7 @@ public:
     // Power control method
     void toggle_standby();
 
-    // Allow exposing this as a service. Should probably be a wrapper class that takes of typecasting from int to char.
+    // Allow exposing this as a service. Should probably be a wrapper class that takes care of typecasting from int to char.
     void send_command(uint8_t command, bool pause_before_and_after_command = true);
 
     void turn_on();
@@ -75,8 +77,11 @@ protected:
     static constexpr uint8_t decrease_volume        = 0x8C;
     static constexpr uint8_t toggle_mute_cmd        = 0x94;
 
+    // Should power on and power off adjust volume
+    bool power_state_controls_volume = true;
+
     // Default volume level (in steps) when turning on
-    int default_volume_level = 6; 
+    int default_volume_level = 6;
     // Max volume (in steps) to assume when turning to zero.
     int max_volume = 20;
 

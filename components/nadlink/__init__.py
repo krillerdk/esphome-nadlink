@@ -12,8 +12,6 @@ from esphome.const import (
 )
 from esphome import pins
 
-AUTO_LOAD = ["button", "select"]
-
 # Create namespace for component
 nadlink_ns = cg.esphome_ns.namespace("nadlink")
 NADLink = nadlink_ns.class_("NADLink", cg.Component)
@@ -34,6 +32,7 @@ CONF_ADDRESS1 = "address1"
 CONF_ADDRESS2 = "address2"
 CONF_MAX_VOLUME = "max_assumed_volume"
 CONF_DEFAULT_VOLUME = "default_volume"
+CONF_POWER_CHANGES_VOLUME = "set_default_volume_on_power_change"
 
 CONF_VOLUME_UP = "volume_up"
 CONF_VOLUME_DOWN = "volume_down"
@@ -41,6 +40,7 @@ CONF_TOGGLE_MUTE = "toggle_mute"
 CONF_TOGGLE_STANDBY = "toggle_standby"
 CONF_POWER_ON = "power_on"
 CONF_POWER_OFF = "power_off"
+
 
 # Disable options
 CONF_VOLUME_BUTTONS = "volume_buttons"
@@ -91,6 +91,7 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_ADDRESS2): cv.hex_int,
     cv.Optional(CONF_MAX_VOLUME): cv.positive_not_null_int,
     cv.Optional(CONF_DEFAULT_VOLUME): cv.positive_not_null_int,
+    cv.Optional(CONF_POWER_CHANGES_VOLUME, default=True): cv.boolean,
 
     # Component enable/disable flags (all enabled by default)
     cv.Optional(CONF_VOLUME_BUTTONS, default=True): cv.boolean,
@@ -138,10 +139,13 @@ async def to_code(config):
         cg.add(var.set_nad_address(conf_addr1, conf_addr2))
 
     # Volume level defaults
-    if CONF_MAX_VOLUME in config:
-        cg.add(var.set_max_assumed_volume(config.get(CONF_MAX_VOLUME)))
-    if CONF_DEFAULT_VOLUME in config:
-        cg.add(var.set_default_volume(config.get(CONF_DEFAULT_VOLUME)))
+    if use_default_volume := config.get(CONF_POWER_CHANGES_VOLUME):
+        cg.add(var.set_power_changes_volume(use_default_volume))
+    # Strictly not needed if use_default_volume is False, but set anyway to prevent surprises if e.g. set_max_assumed_volume get exported as HASS action via lamdas.
+    if max_volume := config.get(CONF_MAX_VOLUME):
+        cg.add(var.set_max_assumed_volume(max_volume))
+    if default_volume := config.get(CONF_DEFAULT_VOLUME):
+        cg.add(var.set_default_volume(default_volume))
 
     # Volume buttons
     if config[CONF_VOLUME_BUTTONS]:
@@ -210,7 +214,7 @@ async def to_code(config):
                 CONF_ICON: DEFAULT_ICONS[CONF_TOGGLE_STANDBY],
                 CONF_DISABLED_BY_DEFAULT: False
             })
-    
+
     # Power buttons
     if config[CONF_POWER_BUTTONS]:
         # Power On button
@@ -228,7 +232,7 @@ async def to_code(config):
                 CONF_ICON: DEFAULT_ICONS[CONF_POWER_ON],
                 CONF_DISABLED_BY_DEFAULT: False
             })
-        
+
         # Power Off button
         if CONF_POWER_OFF in config:
             power_off = cg.new_Pvariable(config[CONF_POWER_OFF][CONF_ID], var)
@@ -244,7 +248,7 @@ async def to_code(config):
                 CONF_ICON: DEFAULT_ICONS[CONF_POWER_OFF],
                 CONF_DISABLED_BY_DEFAULT: False
             })
-    
+
     # Input Select
     if config[CONF_INPUT_SELECT]:
         if CONF_INPUT in config:
