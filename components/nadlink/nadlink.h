@@ -17,7 +17,7 @@ public:
 
     void set_nadlink_pin(GPIOPin *pin);
 
-    void normalize_power_on_volume(bool change_volume_on_power_switch)
+    void normalize_power_on_volume(bool change_volume_on_power_switch);
 
     void set_default_volume(int volume);
     void set_max_assumed_volume(int volume);
