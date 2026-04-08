@@ -12,7 +12,7 @@ from esphome.const import (
 )
 from esphome import pins
 
-DEPENDENCIES=[button,select]
+DEPENDENCIES=["button","select"]
 
 # Create namespace for component
 nadlink_ns = cg.esphome_ns.namespace("nadlink")
