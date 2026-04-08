@@ -142,7 +142,7 @@ async def to_code(config):
 
     # Volume level defaults
     if use_default_volume := config.get(CONF_POWER_CHANGES_VOLUME):
-        cg.add(var.set_power_changes_volume(use_default_volume))
+        cg.add(var.normalize_power_on_volume(use_default_volume))
     # Strictly not needed if use_default_volume is False, but set anyway to prevent surprises if e.g. set_max_assumed_volume get exported as HASS action via lamdas.
     if max_volume := config.get(CONF_MAX_VOLUME):
         cg.add(var.set_max_assumed_volume(max_volume))
