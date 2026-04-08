@@ -46,7 +46,7 @@ void NADLink::set_nad_address(uint8_t address_1, uint8_t address_2) {
    connected directly to main-in).
  */
 void NADLink::normalize_power_on_volume(bool change_volume_on_power_switch) {
-    power_state_changes_volume = change_volume_on_power_switch;
+    power_state_controls_volume = change_volume_on_power_switch;
 }
 
 // Override default start volume
@@ -236,7 +236,7 @@ void NADLink::toggle_speakers_a_b() {
 void NADLink::turn_on() {
     // Power up
     send_command(power_on);
-    if (power_state_changes_volume) {
+    if (power_state_controls_volume) {
         // Wait 4s for the amp to power up and turn on the inputs
         esphome::delay_microseconds_safe(4000);
         // Volume to default
@@ -245,7 +245,7 @@ void NADLink::turn_on() {
 }
 
 void NADLink::turn_off() {
-    if (power_state_changes_volume) {
+    if (power_state_controls_volume) {
         // Volume to zero
         change_volume_to_zero();
     }
