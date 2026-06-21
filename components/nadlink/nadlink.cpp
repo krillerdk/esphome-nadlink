@@ -35,6 +35,20 @@ void NADLink::set_nad_address(uint8_t address_1, uint8_t address_2) {
     nad_address_2 = address_2;
 }
 
+/* Controls whether the volume should be set to a default when
+   powering on and set to zero when powering off.  This prevents a
+   previous volume level from being applied when the amp is powered
+   on, which can be very loud if the dial was turned up before
+   powering off. This does take some extra time though.  Enabled by
+   default for backwards compatibility.
+   Disable if you want the power switch to not affect volume at all,
+   or if you are not using the preamp (i.e. you have a streamer or other device
+   connected directly to main-in).
+ */
+void NADLink::normalize_power_on_volume(bool change_volume_on_power_switch) {
+    power_state_controls_volume = change_volume_on_power_switch;
+}
+
 // Override default start volume
 void NADLink::set_default_volume(int volume) {
     default_volume_level = volume;
@@ -222,15 +236,19 @@ void NADLink::toggle_speakers_a_b() {
 void NADLink::turn_on() {
     // Power up
     send_command(power_on);
-    // Wait 4s for the amp to power up and turn on the inputs
-    esphome::delay_microseconds_safe(4000);
-    // Volume to default
-    change_volume_to_default();
+    if (power_state_controls_volume) {
+        // Wait 4s for the amp to power up and turn on the inputs
+        esphome::delay_microseconds_safe(4000);
+        // Volume to default
+        change_volume_to_default();
+    }
 }
 
 void NADLink::turn_off() {
-    // Volume to zero
-    change_volume_to_zero();
+    if (power_state_controls_volume) {
+        // Volume to zero
+        change_volume_to_zero();
+    }
     // Power down
     send_command(power_off);
 }

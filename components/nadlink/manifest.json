@@ -6,7 +6,7 @@
   "website": "https://github.com/kriller.dk/esphome-nadlink",
   "repository": "https://github.com/kriller.dk/esphome-nadlink.git",
   "documentation": "https://github.com/kriller.dk/esphome-nadlink/blob/main/README.md",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "components": [
     {
       "name": "nadlink",
