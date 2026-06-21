@@ -187,7 +187,7 @@ void NADLink::send_command(uint8_t command, bool pause_before_and_after_command)
     // Pause before command
     if (pause_before_and_after_command) {
         ESP_LOGV(TAG, "Pausing before commmand");
-        delay_microseconds_safe(pause_length_in_ms);
+        delay(pause_length_in_ms);
     }
 
     // Send preamble signal
@@ -207,7 +207,7 @@ void NADLink::send_command(uint8_t command, bool pause_before_and_after_command)
     // Pause after command
     if (pause_before_and_after_command) {
         ESP_LOGV(TAG, "Pausing after commmand");
-        delay_microseconds_safe(pause_length_in_ms);
+        delay(pause_length_in_ms);
     }
 }
 
